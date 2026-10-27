@@ -1,0 +1,34 @@
+@font-face{font-family:Phosphor;src:url(/assets/phosphor.woff2) format("woff2");font-style:normal;font-weight:normal;font-display:block}.ph{font-family:Phosphor!important;font-style:normal;font-weight:normal;line-height:1;-webkit-font-smoothing:antialiased;speak:never}
+.ph.ph-squares-four:before {
+  content: "\e464";
+}
+.ph.ph-whatsapp-logo:before {
+  content: "\e5d0";
+}
+.ph.ph-plus:before {
+  content: "\e3d4";
+}
+.ph.ph-check:before {
+  content: "\e182";
+}
+.ph.ph-arrow-down:before {
+  content: "\e03e";
+}
+.ph.ph-arrow-left:before {
+  content: "\e058";
+}
+.ph.ph-arrow-right:before {
+  content: "\e06c";
+}
+.ph.ph-arrow-up-right:before {
+  content: "\e092";
+}
+.ph.ph-shopping-bag:before {
+  content: "\e416";
+}
+.ph.ph-x:before {
+  content: "\e4f6";
+}
+.ph.ph-eye:before {
+  content: "\e220";
+}
