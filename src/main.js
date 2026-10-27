@@ -1,7 +1,7 @@
 import './style.css';
 import './icons.css';
 import {gsap} from 'gsap';
-import {flavors,buildOrderMessage,whatsappUrl,getScrollState} from './catalog.js';
+import {flavors,buildOrderMessage,instagramDMUrl,getScrollState} from './catalog.js';
 
 const $=s=>document.querySelector(s);
 const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -20,6 +20,7 @@ function updateSelection(){
  document.querySelectorAll('[data-add]').forEach(b=>{const selected=chosen.has(b.dataset.add);const f=flavors.find(f=>f.id===b.dataset.add);b.setAttribute('aria-pressed',String(selected));b.setAttribute('aria-label',`${selected?'Quitar':'Añadir'} ${f.name} ${selected?'de':'a'} mi pedido`);b.querySelector('i').className=`ph ph-${selected?'check':'plus'}`;});
  document.querySelectorAll('input[name="flavors"]').forEach(input=>input.checked=chosen.has(input.value));
  const selected=chosen.has(flavors[Math.max(0,current)].id);const button=$('#feature-add');button.classList.toggle('is-selected',selected);button.setAttribute('aria-pressed',String(selected));button.querySelector('span').textContent=selected?'En mi pedido':'La quiero';button.querySelector('i').className=`ph ph-${selected?'check':'plus'}`;
+ refreshSummary();
 }
 function toggleFlavor(id){
  const f=flavors.find(f=>f.id===id);if(chosen.has(id))chosen.delete(id);else chosen.add(id);updateSelection();clearTimeout(feedbackTimer);$('#selection-feedback').textContent=chosen.has(id)?`${f.name} añadida. ¿Otro antojo?`:`${f.name} quitada de tu consulta.`;feedbackTimer=setTimeout(()=>$('#selection-feedback').textContent='',3500);
@@ -81,9 +82,31 @@ function openOrder(){returnFocus=document.activeElement;$('#order-dialog').showM
 document.querySelectorAll('.order-trigger').forEach(b=>b.addEventListener('click',openOrder));
 $('#order-flavors').addEventListener('change',e=>{if(e.target.matches('input')){if(e.target.checked)chosen.add(e.target.value);else chosen.delete(e.target.value);updateSelection();}});
 const date=$('input[name="date"]'),today=new Date();date.min=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
-$('#order-form').addEventListener('submit',e=>{e.preventDefault();if(!e.target.reportValidity())return;const data=new FormData(e.target);const message=buildOrderMessage({flavors:flavors.filter(f=>chosen.has(f.id)).map(f=>f.name),size:data.get('size'),guests:data.get('guests'),date:data.get('date'),notes:data.get('notes')});window.open(whatsappUrl(message),'_blank','noopener,noreferrer');});
+function currentOrderMessage(){
+ const data=new FormData($('#order-form'));
+ return buildOrderMessage({flavors:flavors.filter(f=>chosen.has(f.id)).map(f=>f.name),size:data.get('size'),guests:data.get('guests'),date:data.get('date'),notes:data.get('notes')});
+}
+function refreshSummary(){
+ if($('#instagram-review').hidden)return;
+ $('#instagram-summary').value=currentOrderMessage();$('#copy-status').textContent='';
+}
+$('#order-form').addEventListener('input',refreshSummary);
+$('#order-form').addEventListener('submit',e=>{
+ e.preventDefault();if(!e.target.reportValidity())return;
+ $('#instagram-review').hidden=false;refreshSummary();$('#copy-instagram').focus();
+});
+$('#copy-instagram').addEventListener('click',()=>{
+ const summary=$('#instagram-summary'),status=$('#copy-status');
+ const manualCopy=()=>{status.textContent='No se pudo copiar automáticamente. Selecciona y copia el texto de abajo; después pégalo en Instagram.';summary.focus();summary.select();};
+ // Start copying while focused, and open the chat in the same click (no awaited popup).
+ let copying;
+ try{copying=navigator.clipboard?.writeText(summary.value);}catch{}
+ window.open(instagramDMUrl,'_blank','noopener,noreferrer');
+ if(!copying){manualCopy();return;}
+ copying.then(()=>{status.textContent='Pedido copiado. Pégalo en el chat de @dpdcake y pulsa Enviar.';},manualCopy);
+});
 document.querySelectorAll('dialog').forEach(d=>{d.querySelector('.dialog-close').addEventListener('click',()=>d.close());d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}});d.addEventListener('close',()=>returnFocus?.focus());});
-$('#business-link').href=whatsappUrl('¡Hola, DPD Cake! Me gustaría consultar vuestros postres para mi negocio o evento.');$('#year').textContent=new Date().getFullYear();
+$('#business-link').href=instagramDMUrl;$('#year').textContent=new Date().getFullYear();
 // Decode the small product cutouts before they enter the scroll experience.
 for(const f of flavors){const preload=new Image();preload.src=f.image;}
 if(!reduced){gsap.fromTo('.hero-copy>h1',{opacity:0,y:30},{opacity:1,y:0,duration:.9,ease:'power3.out'});gsap.fromTo('.hero-product',{opacity:0,scale:.95},{opacity:1,scale:1,duration:1.1,ease:'power2.out'});}

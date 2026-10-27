@@ -1,6 +1,6 @@
 # DPD Cake
 
-Web de DPD Cake: diez sabores, una carta visual y pedidos por WhatsApp.
+Web de DPD Cake: diez sabores, una carta visual y pedidos por Instagram.
 
 **Web:** https://dpdcake.vercel.app/  
 **Repositorio:** https://github.com/OGParfene/dpd-cake
@@ -24,7 +24,7 @@ Vite genera `dist/`. La configuración de publicación está en `vercel.json`.
 - Catálogo de diez sabores confirmado por las publicaciones de DPD Cake.
 - Composiciones de producto en WebP y logo limpio de alta resolución.
 - Degustación visual al hacer scroll, navegación directa y alternativa sin movimiento.
-- Filtros y selección de varios sabores para preparar una consulta por WhatsApp.
+- Filtros y selección de varios sabores para preparar una consulta por Instagram.
 - Clientes, Instagram, contacto y privacidad.
 - Documentación de marca, recursos maestros y archivo de versiones anteriores.
 
@@ -35,7 +35,7 @@ La web actual utiliza imágenes de presentación; no utiliza modelos 3D. Los mat
 | Archivo | Contenido |
 | --- | --- |
 | `src/catalog.js` | Sabores, textos, categorías, colores e imágenes |
-| `src/main.js` | Scroll, filtros, selección, diálogos y WhatsApp |
+| `src/main.js` | Scroll, filtros, selección, diálogos y Instagram |
 | `src/style.css` | Layout, tipografía, móvil y movimiento reducido |
 | `index.html` | Estructura, textos generales, clientes y contacto |
 | `public/assets/flavors/` | Recortes optimizados de producto |
@@ -50,7 +50,7 @@ La web actual utiliza imágenes de presentación; no utiliza modelos 3D. Los mat
 
 ## Pedidos
 
-WhatsApp: +34 601 082 383. Se prepara un mensaje con los sabores, personas, fecha y notas; no se envía automáticamente. DPD Cake confirma formato, precio, disponibilidad, ingredientes y recogida o entrega antes de cerrar el pedido.
+Instagram: [@dpdcake](https://www.instagram.com/dpdcake/). Teléfono: +34 601 082 383. Se prepara un resumen con los sabores, tamaño, personas, fecha y notas. El visitante lo copia, abre Instagram y lo pega y envía manualmente en el chat de @dpdcake. DPD Cake confirma formato, precio, disponibilidad, ingredientes y recogida o entrega antes de cerrar el pedido.
 
 ## Privacidad y accesibilidad
 

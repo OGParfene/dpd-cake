@@ -17,3 +17,5 @@ select:focus-visible{outline:3px solid #40774a;outline-offset:5px}.footer-legal{
 @media(max-width:760px){.hero-product{width:92%;height:82%;left:2%;top:4%}#feature-product{width:90%;left:5%}.closing-slice{width:24%}.closing-left{left:0}.closing-right{right:0}select{font-size:16px}.footer-legal{margin-left:auto;flex-wrap:wrap;gap:12px}}
 
 .product-art>button[aria-pressed="true"]{transform:none;transition:background .2s}
+
+.instagram-review{margin-top:24px;border-top:1px solid #22211c30;padding-top:20px}.instagram-review[hidden]{display:none}.instagram-review h3{font-size:17px;margin:0 0 10px}.instagram-review p{font-size:10px;line-height:1.65;margin:10px 0}.instagram-review label{font-size:10px;font-weight:700;display:block;margin-bottom:8px}.instagram-review textarea{display:block;margin-bottom:14px;line-height:1.5}.instagram-review .button{width:100%;font-size:11px}.instagram-review a{text-decoration:underline}.instagram-review #copy-status{font-weight:600}@media(max-width:760px){.instagram-review textarea{font-size:16px}.instagram-review .button{font-size:10px}}

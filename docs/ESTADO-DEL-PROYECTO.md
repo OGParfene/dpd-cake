@@ -19,9 +19,9 @@ Las publicaciones se verifican con el estado de despliegue de Vercel. No se afir
 
 ## Implementación actual
 
-Vite, JavaScript, GSAP y recursos WebP con transparencia. Sin Three.js, canvas ni modelos 3D. Diez sabores, imágenes ligadas al scroll, navegación directa, filtros de carta, selección múltiple y consulta de WhatsApp al +34 601 082 383.
+Vite, JavaScript, GSAP y recursos WebP con transparencia. Sin Three.js, canvas ni modelos 3D. Diez sabores, imágenes ligadas al scroll, navegación directa, filtros de carta, selección múltiple y consulta por mensaje directo a @dpdcake.
 
-No hay backend, persistencia de datos del visitante, analítica ni cookies publicitarias. Los campos preparan un mensaje local; el usuario decide cuándo enviarlo en WhatsApp.
+No hay backend, persistencia de datos del visitante, analítica ni cookies publicitarias. Los campos preparan un mensaje local; el usuario decide cuándo enviarlo en Instagram.
 
 ## Pendientes de contenido
 
@@ -31,4 +31,4 @@ No hay backend, persistencia de datos del visitante, analítica ni cookies publi
 - Confirmación del cliente Black Bull concreto y del colaborador «Desde Cero».
 - Nombres de los festivales patrocinados.
 
-No se han inventado esos datos. El negocio los confirma por WhatsApp.
+No se han inventado esos datos. El negocio los confirma por Instagram.

@@ -91,7 +91,8 @@ export const flavors = [
     "source": "user-brand-image"
   }
 ];
-export const whatsappUrl=message=>`https://wa.me/34601082383?text=${encodeURIComponent(message)}`;
+export const instagramDMUrl='https://ig.me/m/dpdcake';
+export const instagramProfileUrl='https://www.instagram.com/dpdcake/';
 export function buildOrderMessage({flavors:chosen=[],flavor,size,guests,date,notes}={}){
  const names=chosen.length?chosen:flavor?[flavor]:[];
  const lines=['¡Hola, DPD Cake! Me gustaría consultar un encargo.',names.length?`Sabores: ${names.join(', ')}.`:'Me gustaría que me recomendarais un sabor.'];

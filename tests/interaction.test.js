@@ -2,18 +2,22 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {JSDOM} from 'jsdom';
-import {flavors,buildOrderMessage,whatsappUrl,getScrollState} from '../src/catalog.js';
+import {flavors,buildOrderMessage,instagramDMUrl,getScrollState} from '../src/catalog.js';
 function setup({motion=false}={}){
  const dom=new JSDOM(readFileSync(new URL('../index.html',import.meta.url),'utf8'),{url:'https://dpdcake.vercel.app',runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;
  w.matchMedia=()=>({matches:!motion});w.requestAnimationFrame=fn=>{fn(0);return 1;};w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
  w.HTMLDialogElement.prototype.showModal=function(){this.setAttribute('open','');};w.HTMLDialogElement.prototype.close=function(){this.removeAttribute('open');this.dispatchEvent(new w.Event('close'));};
  let opened;const animations=[];w.open=url=>{opened=url;};
- Object.assign(w,{flavors,buildOrderMessage,whatsappUrl,getScrollState,gsap:{killTweensOf(){},set(){},to(_e,o){if(o.onComplete)animations.push(o.onComplete);},fromTo(_e,_from,to){if(to.onComplete)animations.push(to.onComplete);}}});
+ Object.assign(w,{flavors,buildOrderMessage,instagramDMUrl,getScrollState,gsap:{killTweensOf(){},set(){},to(_e,o){if(o.onComplete)animations.push(o.onComplete);},fromTo(_e,_from,to){if(to.onComplete)animations.push(to.onComplete);}}});
  const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');w.eval(source);return {dom,w,document:w.document,getOpened:()=>opened,finishAnimation:()=>{assert.ok(animations.length,'Expected a pending animation');animations.shift()();},animationCount:()=>animations.length};
 }
-test('visitor can choose several flavors, change selections and prepare WhatsApp',()=>{
+test('visitor can choose several flavors, copy the order and open Instagram',async()=>{
  const app=setup(),d=app.document;d.querySelector('#feature-add').click();d.querySelector('[data-add="brownie"]').click();assert.equal(d.querySelector('#selection-count').textContent,'2');d.querySelector('.header-order').click();assert.ok(d.querySelector('#order-dialog').open);assert.equal(d.querySelectorAll('input[name="flavors"]:checked').length,2);
- d.querySelector('select[name="size"]').value='Mediana';d.querySelector('input[name="guests"]').value='8';d.querySelector('input[name="date"]').value='2100-12-24';d.querySelector('textarea').value='Alergia: nueces & avellanas';d.querySelector('#order-form').dispatchEvent(new app.w.Event('submit',{bubbles:true,cancelable:true}));const u=new URL(app.getOpened());assert.equal(u.pathname,'/34601082383');const message=u.searchParams.get('text');for(const part of ['Tradicional, Brownie','Tamaño solicitado: Mediana','Personas: 8','24/12/2100','nueces & avellanas'])assert.ok(message.includes(part));
+ d.querySelector('select[name="size"]').value='Mediana';d.querySelector('input[name="guests"]').value='8';d.querySelector('input[name="date"]').value='2100-12-24';d.querySelector('textarea').value='Alergia: nueces & avellanas';d.querySelector('#order-form').dispatchEvent(new app.w.Event('submit',{bubbles:true,cancelable:true}));assert.equal(app.getOpened(),undefined);const message=d.querySelector('#instagram-summary').value;for(const part of ['Tradicional, Brownie','Tamaño solicitado: Mediana','Personas: 8','24/12/2100','nueces & avellanas'])assert.ok(message.includes(part));
+ let copied;Object.defineProperty(app.w.navigator,'clipboard',{value:{writeText:async text=>{copied=text;}},configurable:true});
+ d.querySelector('#copy-instagram').click();await Promise.resolve();
+ assert.equal(app.getOpened(),'https://ig.me/m/dpdcake');assert.equal(copied,message);assert.ok(d.querySelector('#copy-status').textContent.includes('Pedido copiado'));
+
  const check=d.querySelector('input[value="brownie"]');check.checked=false;check.dispatchEvent(new app.w.Event('change',{bubbles:true}));assert.equal(d.querySelector('#selection-count').textContent,'1');assert.equal(d.querySelector('[data-add="brownie"]').getAttribute('aria-pressed'),'false');app.dom.window.close();
 });
 test('filters retain selections and restore correct selected state',()=>{
@@ -56,4 +60,15 @@ test('leaving the section clears queued transitions and ignores stale callbacks'
  Object.defineProperty(app.w,'scrollY',{value:12000,configurable:true});app.w.dispatchEvent(new app.w.Event('scroll'));
  assert.equal(d.querySelector('#feature-name').textContent,'Brownie.');
  app.finishAnimation();assert.equal(d.querySelector('#feature-name').textContent,'Brownie.');app.dom.window.close();
+});
+
+test('clipboard refusal keeps the order available for manual copy',async()=>{
+ const app=setup(),d=app.document;d.querySelector('#feature-add').click();d.querySelector('#order-form').dispatchEvent(new app.w.Event('submit',{bubbles:true,cancelable:true}));
+ Object.defineProperty(app.w.navigator,'clipboard',{value:{writeText:()=>Promise.reject(new Error('Not allowed'))},configurable:true});
+ d.querySelector('#copy-instagram').click();await Promise.resolve();assert.ok(d.querySelector('#copy-status').textContent.includes('No se pudo copiar'));assert.equal(d.activeElement.id,'instagram-summary');assert.ok(d.querySelector('#instagram-summary').value.includes('Tradicional'));assert.ok(d.querySelector('#instagram-review a').href.includes('instagram.com/dpdcake'));app.dom.window.close();
+});
+test('prepared summary updates when sizes or flavors change before copying',()=>{
+ const app=setup(),d=app.document;d.querySelector('#order-form').dispatchEvent(new app.w.Event('submit',{bubbles:true,cancelable:true}));
+ d.querySelector('[data-add="pistacho"]').click();const size=d.querySelector('[name="size"]');size.value='Grande';size.dispatchEvent(new app.w.Event('input',{bubbles:true}));
+ assert.ok(d.querySelector('#instagram-summary').value.includes('Pistacho'));assert.ok(d.querySelector('#instagram-summary').value.includes('Grande'));assert.equal(app.getOpened(),undefined);app.dom.window.close();
 });
