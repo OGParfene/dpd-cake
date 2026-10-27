@@ -1,10 +1,11 @@
 # DPD Cake
 
-Web de DPD Cake con diez sabores confirmados por las piezas de la marca, una tarta 3D interactiva, cambios de fondo al hacer scroll y selección de sabores para consultas por WhatsApp.
+Web de DPD Cake: diez sabores, una carta visual y pedidos por WhatsApp.
 
-**Web:** https://dpdcake.vercel.app/
+**Web:** https://dpdcake.vercel.app/  
+**Repositorio:** https://github.com/OGParfene/dpd-cake
 
-## Arranque
+## Desarrollo
 
 ```sh
 npm ci
@@ -16,35 +17,45 @@ npm test
 npm run build
 ```
 
-`npm run build` genera `dist/`. Vercel utiliza `vercel.json`.
+Vite genera `dist/`. La configuración de publicación está en `vercel.json`.
+
+## Qué contiene
+
+- Catálogo de diez sabores confirmado por las publicaciones de DPD Cake.
+- Composiciones de producto en WebP y logo limpio de alta resolución.
+- Degustación visual al hacer scroll, navegación directa y alternativa sin movimiento.
+- Filtros y selección de varios sabores para preparar una consulta por WhatsApp.
+- Clientes, Instagram, contacto y privacidad.
+- Documentación de marca, recursos maestros y archivo de versiones anteriores.
+
+La web actual utiliza imágenes de presentación; no utiliza modelos 3D. Los materiales nuevos se crearon con autorización del usuario siguiendo las referencias de la marca. Los originales adjuntos en el chat todavía no se han proporcionado como archivos descargables y no se afirma que estén incluidos aquí.
 
 ## Cómo editar
 
 | Archivo | Contenido |
 | --- | --- |
-| `src/catalog.js` | Sabores, textos, colores, materiales y mensaje de pedido |
-| `src/cake.js` | Modelo creativo 3D, toppings y animaciones |
-| `src/geometry.js` | Geometría de las porciones |
-| `src/main.js` | Scroll, navegación, selección múltiple y diálogos |
-| `src/style.css` | Diseño adaptable y movimiento reducido |
-| `index.html` | Estructura, contacto, clientes y privacidad |
-| `public/assets/` | Logos, textura de grafiti, iconos y fallback |
+| `src/catalog.js` | Sabores, textos, categorías, colores e imágenes |
+| `src/main.js` | Scroll, filtros, selección, diálogos y WhatsApp |
+| `src/style.css` | Layout, tipografía, móvil y movimiento reducido |
+| `index.html` | Estructura, textos generales, clientes y contacto |
+| `public/assets/flavors/` | Recortes optimizados de producto |
+| `docs/recursos-maestros/` | Materiales gráficos de alta resolución |
 
 ## Documentación
 
-- [Marca, catálogo y referencias](docs/MARCA-Y-CONTENIDO.md).
-- [Publicación, verificación y estado de GitHub](docs/ESTADO-DEL-PROYECTO.md).
+- [Marca y catálogo](docs/MARCA-Y-CONTENIDO.md).
+- [Recursos y dirección visual](docs/RECURSOS-Y-DISENO.md).
+- [Estado y publicación](docs/ESTADO-DEL-PROYECTO.md).
+- [Verificación y límites](docs/VALIDACION.md).
 
-## Pedidos y privacidad
+## Pedidos
 
-WhatsApp al +34 601 082 383. La selección prepara un mensaje con sabores, personas, fecha y notas; no lo envía automáticamente. El negocio confirma tamaño, precio, disponibilidad, ingredientes y entrega. No hay backend, analítica, cookies publicitarias ni almacenamiento de datos del visitante. Las fuentes se sirven desde Google Fonts; se indica en Privacidad.
+WhatsApp: +34 601 082 383. Se prepara un mensaje con los sabores, personas, fecha y notas; no se envía automáticamente. DPD Cake confirma formato, precio, disponibilidad, ingredientes y recogida o entrega antes de cerrar el pedido.
 
-## Accesibilidad y funcionamiento
+## Privacidad y accesibilidad
 
-Carta y pedidos siguen funcionando si WebGL no está disponible. El modelo 3D se carga aparte para no bloquear la interfaz. Navegación de sabores mediante botones y carta, formularios etiquetados, diálogos nativos, foco visible y alternativa con movimiento reducido. La tarta es una representación creativa 3D; las fotografías reales se consultan en Instagram.
+Sin analítica, cookies publicitarias, backend ni almacenamiento de datos del visitante. Google Fonts sirve las tipografías; se indica en Privacidad. Formularios etiquetados, foco visible, diálogos nativos y soporte de movimiento reducido.
 
-## Validación
+## Verificación
 
-`npm test` comprueba catálogo, scroll, geometría, selección y WhatsApp. La compilación y estas pruebas no sustituyen una revisión visual real: esa revisión sigue pendiente por falta de navegador conectado.
-
-Los originales de las piezas adjuntas en el chat no están disponibles como archivos locales: este repositorio documenta su contenido sin afirmar que los contiene. El estado de acceso de GitHub está registrado en la documentación; la creación remota ha sido rechazada por la integración, aunque el usuario la ha autorizado.
+Las pruebas y la compilación se pueden ejecutar con los comandos anteriores. La revisión en navegador real sigue pendiente por falta de herramienta de navegador conectada; no se presenta la validación DOM como revisión visual.

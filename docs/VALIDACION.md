@@ -1,10 +1,9 @@
-# Validación — 27/10/2026
+# Validación de la versión actual
 
-- Compilación Vite: correcta.
-- Ocho pruebas automáticas: correctas.
-- Cobertura funcional: catálogo de diez sabores sin duplicados, selección múltiple, cambios de selección desde el formulario, consulta WhatsApp con datos literales, selección directa con movimiento reducido, límites del scroll y geometría finita de las porciones.
-- HTML: identificadores únicos, anclas válidas y archivos de imagen presentes.
-- Renderizado 3D: modelo y geometría compilados; pendiente de inspección en navegador y GPU reales.
-- Revisión visual de escritorio y móvil: bloqueada por falta de navegador conectado. Las pruebas DOM no son una captura ni una verificación visual.
+- Compilación Vite de producción.
+- Siete pruebas automáticas de catálogo, selección múltiple, filtros que conservan el pedido, navegación directa sin movimiento, campos opcionales, codificación del mensaje de WhatsApp y límites del cálculo de scroll.
+- Validación de HTML: IDs únicos, anclas válidas e imágenes locales presentes.
+- Validación de assets: los diez sabores tienen un recurso WebP real y los materiales nuevos mantienen transparencia.
+- El modelo 3D y su dependencia se han retirado por completo de la web actual.
 
-El bundle 3D se descarga por separado de la interfaz. Si falla o no hay WebGL, se muestra una imagen ilustrativa y la carta y los pedidos siguen disponibles. El diseño incluye una alternativa para movimiento reducido.
+No hay herramienta de navegador conectada disponible en la sesión: la revisión visual en escritorio y móvil y la ejecución de las animaciones en un navegador real siguen pendientes. Las pruebas DOM y la compilación no equivalen a una captura o validación visual. Los recursos gráficos se han inspeccionado como imágenes.

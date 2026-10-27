@@ -44,4 +44,4 @@ El usuario ha indicado como clientes: Rocket (San Fernando de Henares), Ruta 13 
 
 Las piezas adjuntas son visibles como referencia en la conversación, pero no se han proporcionado como archivos descargables accesibles al proyecto. No se afirma que estén guardadas en este repositorio. Cuando se reciba el ZIP original, conservarlo en `docs/referencias/` e incorporar fotografías recortadas en `public/assets/sabores/`.
 
-Los assets disponibles en el proyecto son los logos recuperados, la portada ilustrativa de la primera versión y el nuevo fondo decorativo generado a partir del estilo de las piezas. La nueva tarta principal es un modelo 3D creativo con porciones y toppings por sabor; no es una fotografía real del producto. La web lo indica al pie.
+Los assets disponibles incluyen los logos recuperados y los nuevos materiales de presentación creados con autorización del usuario. La versión actual reemplaza el modelo 3D por composiciones fotográficas de porciones con transparencia. El detalle de procedencia y los recursos maestros están en `RECURSOS-Y-DISENO.md`. La web indica que son imágenes de presentación y enlaza a las fotografías reales de Instagram.

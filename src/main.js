@@ -5,52 +5,61 @@ import {flavors,buildOrderMessage,whatsappUrl,getScrollState} from './catalog.js
 
 const $=s=>document.querySelector(s);
 const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const story=$('.story');const stage=$('.stage');const chosen=new Set();
-let current=-1,cake=null,framePending=false,forcedIndex=null,feedbackTimer;
-const title=$('#flavor-title'),description=$('#flavor-description');
-const menu=$('#menu-grid');
-menu.innerHTML=flavors.map((f,i)=>`<article class="menu-item"><span class="menu-item-number">${String(i+1).padStart(2,'0')}</span><div><h3>${f.name}</h3><p>${f.description}</p></div><div class="menu-item-actions"><button data-explore="${i}" aria-label="Ver la tarta ${f.name}"><i class="ph ph-eye" aria-hidden="true"></i></button><button data-add="${f.id}" aria-label="Añadir ${f.name} a la consulta" aria-pressed="false"><i class="ph ph-plus" aria-hidden="true"></i></button></div></article>`).join('');
-const checkboxes=$('#order-flavors');
-checkboxes.insertAdjacentHTML('beforeend',flavors.map(f=>`<label class="flavor-checkbox"><input type="checkbox" value="${f.id}" name="flavors"/><span>${f.name}</span></label>`).join(''));
+const chosen=new Set();const story=$('#flavor-story');const stage=$('.flavor-stage');
+let current=-1,framePending=false,forcedIndex=null,jumpTimer,feedbackTimer;
+const image=$('#feature-product'),name=$('#feature-name'),description=$('#feature-description');
+const grid=$('#catalog-grid');let filter='all';
+function renderCatalog(){
+ grid.innerHTML=flavors.filter(f=>filter==='all'||f.category===filter).map(f=>`<article class="product-card"><div class="product-art" style="--flavor-paper:${f.paper}"><span>${String(flavors.indexOf(f)+1).padStart(2,'0')}</span><img src="${f.image}" alt="Composición de cheesecake ${f.name}" width="512" height="307" loading="lazy"/><button data-add="${f.id}" aria-label="Añadir ${f.name} a mi pedido" aria-pressed="false"><i class="ph ph-plus" aria-hidden="true"></i></button></div><h3>${f.name}</h3><p>${f.description}</p></article>`).join('');updateSelection();
+}
+$('#flavor-dots').innerHTML=flavors.map((f,i)=>`<button data-explore="${i}" aria-label="Ver ${f.name}" aria-pressed="${i===0}"></button>`).join('');
+$('#order-flavors').insertAdjacentHTML('beforeend',flavors.map(f=>`<label class="flavor-checkbox"><input type="checkbox" value="${f.id}" name="flavors"/><span>${f.name}</span></label>`).join(''));
 function updateSelection(){
  const count=chosen.size;$('#selection-count').textContent=count;$('#basket-count').textContent=count;$('.basket-button').classList.toggle('has-items',count>0);
- document.querySelectorAll('[data-add]').forEach(b=>{const selected=chosen.has(b.dataset.add);b.setAttribute('aria-pressed',String(selected));b.setAttribute('aria-label',`${selected?'Quitar':'Añadir'} ${flavors.find(f=>f.id===b.dataset.add).name} ${selected?'de':'a'} la consulta`);b.querySelector('i').className=`ph ph-${selected?'check':'plus'}`;});
+ document.querySelectorAll('[data-add]').forEach(b=>{const selected=chosen.has(b.dataset.add);const f=flavors.find(f=>f.id===b.dataset.add);b.setAttribute('aria-pressed',String(selected));b.setAttribute('aria-label',`${selected?'Quitar':'Añadir'} ${f.name} ${selected?'de':'a'} mi pedido`);b.querySelector('i').className=`ph ph-${selected?'check':'plus'}`;});
  document.querySelectorAll('input[name="flavors"]').forEach(input=>input.checked=chosen.has(input.value));
- const selected=chosen.has(flavors[Math.max(0,current)].id);const button=$('#add-flavor');button.classList.toggle('is-selected',selected);button.setAttribute('aria-pressed',String(selected));button.querySelector('span').textContent=selected?'En mi pedido':'La quiero';button.querySelector('i').className=`ph ph-${selected?'check':'plus'}`;
+ const selected=chosen.has(flavors[Math.max(0,current)].id);const button=$('#feature-add');button.classList.toggle('is-selected',selected);button.setAttribute('aria-pressed',String(selected));button.querySelector('span').textContent=selected?'En mi pedido':'La quiero';button.querySelector('i').className=`ph ph-${selected?'check':'plus'}`;
 }
-function toggleFlavor(id){const f=flavors.find(f=>f.id===id);if(chosen.has(id))chosen.delete(id);else chosen.add(id);updateSelection();clearTimeout(feedbackTimer);$('#selection-feedback').textContent=chosen.has(id)?`${f.name} en tu consulta. ¿Otro antojo?`:`${f.name} quitada de tu consulta.`;feedbackTimer=setTimeout(()=>{$('#selection-feedback').textContent='';},3600);}
+function toggleFlavor(id){
+ const f=flavors.find(f=>f.id===id);if(chosen.has(id))chosen.delete(id);else chosen.add(id);updateSelection();clearTimeout(feedbackTimer);$('#selection-feedback').textContent=chosen.has(id)?`${f.name} añadida. ¿Otro antojo?`:`${f.name} quitada de tu consulta.`;feedbackTimer=setTimeout(()=>$('#selection-feedback').textContent='',3500);
+}
 function applyFlavor(index,initial=false){
- if(index===current)return;current=index;const f=flavors[index];story.style.setProperty('--scene',f.color);story.style.setProperty('--scene-ink',f.ink);$('meta[name="theme-color"]').content=f.color;
- const update=()=>{title.innerHTML=`<span class="desktop-name">${f.display.split('\n').join('<br/>')}</span><span class="mobile-name">${f.name}.</span>`;description.textContent=f.description;$('#flavor-number').textContent=String(index+1).padStart(2,'0');$('#active-name').textContent=f.name;$('.stage-category').textContent=f.id==='tres-chocolates'?'SPECIAL CAKE':'CHEESECAKE';updateSelection();};
- if(initial||reduced){update();}else{gsap.killTweensOf([title,description]);gsap.to([title,description],{opacity:0,x:-12,duration:.12,onComplete:()=>{update();gsap.fromTo([title,description],{opacity:0,x:22},{opacity:1,x:0,duration:.42,stagger:.04,ease:'power2.out'});}});}
- $('#prev-flavor').disabled=index===0;$('#next-flavor').disabled=index===flavors.length-1;$('#flavor-progress-fill').style.width=`${(index+1)/flavors.length*100}%`;
+ if(index===current)return;current=index;const f=flavors[index];stage.style.setProperty('--scene',f.paper);
+ $('#feature-number').textContent=String(index+1).padStart(2,'0');$('#feature-counter').textContent=`${String(index+1).padStart(2,'0')} — 10`;$('#feature-type').textContent=f.id==='tres-chocolates'?'SPECIAL CAKE':'CHEESECAKE';
+ document.querySelectorAll('[data-explore]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.explore)===index)));
+ $('#prev-flavor').disabled=index===0;$('#next-flavor').disabled=index===flavors.length-1;
+ const swap=()=>{image.src=f.image;image.alt=`Composición de cheesecake ${f.name}`;name.textContent=f.name+'.';description.textContent=f.description;};
+ if(initial||reduced){swap();}else{
+  gsap.killTweensOf([image,name,description]);const direction=index%2?1:-1;
+  gsap.to([image,name,description],{opacity:0,duration:.13,onComplete:()=>{swap();gsap.fromTo(image,{opacity:0,x:direction*45,rotation:direction*4,scale:.96},{opacity:1,x:0,rotation:-8,scale:1,duration:.6,ease:'power3.out'});gsap.fromTo([name,description],{opacity:0,y:15},{opacity:1,y:0,duration:.4,stagger:.04,ease:'power2.out'});}});
+ }
+ updateSelection();
 }
 function jumpTo(index){
- index=Math.max(0,Math.min(flavors.length-1,index));const range=story.offsetHeight-window.innerHeight;
- if(reduced){forcedIndex=index;applyFlavor(index);cake?.setFlavor(index);window.scrollTo({top:story.offsetTop,behavior:'instant'});return;}
- forcedIndex=null;window.scrollTo({top:story.offsetTop+(index+.12)/flavors.length*range,behavior:'smooth'});
+ index=Math.max(0,Math.min(flavors.length-1,index));forcedIndex=index;clearTimeout(jumpTimer);applyFlavor(index);
+ if(reduced){story.scrollIntoView({behavior:'instant',block:'start'});return;}
+ const top=story.offsetTop+(index+.35)/flavors.length*Math.max(1,story.offsetHeight-window.innerHeight);window.scrollTo({top,behavior:'smooth'});jumpTimer=setTimeout(()=>{forcedIndex=null;},900);
 }
-function onScroll(){if(framePending)return;framePending=true;requestAnimationFrame(()=>{framePending=false;const state=getScrollState(window.scrollY,story.offsetTop,story.offsetHeight,window.innerHeight,flavors.length);const index=forcedIndex??state.index;applyFlavor(index);cake?.setFlavor(index,state.local);if(!reduced)$('.graffiti').style.transform=`translateY(${-state.progress*3}%) rotate(${state.progress*2}deg)`;});}
-window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll);applyFlavor(0,true);onScroll();
-$('#prev-flavor').addEventListener('click',()=>jumpTo(current-1));$('#next-flavor').addEventListener('click',()=>jumpTo(current+1));
-$('#add-flavor').addEventListener('click',()=>toggleFlavor(flavors[current].id));
-for(const selector of ['#menu-toggle','#open-all'])$(selector).addEventListener('click',()=>$('#carta').scrollIntoView({behavior:reduced?'instant':'smooth'}));
-menu.addEventListener('click',e=>{const add=e.target.closest('[data-add]');if(add)toggleFlavor(add.dataset.add);const explore=e.target.closest('[data-explore]');if(explore)jumpTo(Number(explore.dataset.explore));});
-let focusReturn;
-function openOrder(){focusReturn=document.activeElement;$('#order-dialog').showModal();}
+function onScroll(){
+ if(framePending)return;framePending=true;requestAnimationFrame(()=>{framePending=false;
+  if(!reduced){const state=getScrollState(window.scrollY,story.offsetTop,story.offsetHeight,window.innerHeight,flavors.length);applyFlavor(forcedIndex??state.index);const y=Math.min(window.scrollY,900);$('.hero-product').style.transform=`translateY(${y*.11}px) rotate(${-13+y*.009}deg)`;}
+ });
+}
+renderCatalog();applyFlavor(0,true);
+window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll);onScroll();
+$('#prev-flavor').addEventListener('click',()=>jumpTo(current-1));$('#next-flavor').addEventListener('click',()=>jumpTo(current+1));$('#feature-add').addEventListener('click',()=>toggleFlavor(flavors[current].id));
+$('#flavor-dots').addEventListener('click',e=>{const b=e.target.closest('[data-explore]');if(b)jumpTo(Number(b.dataset.explore));});
+grid.addEventListener('click',e=>{const b=e.target.closest('[data-add]');if(b)toggleFlavor(b.dataset.add);});
+document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(button=>{button.classList.toggle('active',button===b);button.setAttribute('aria-pressed',String(button===b));});renderCatalog();}));
+let returnFocus;
+function openOrder(){returnFocus=document.activeElement;$('#order-dialog').showModal();}
 document.querySelectorAll('.order-trigger').forEach(b=>b.addEventListener('click',openOrder));
-$('#quick-order').addEventListener('click',()=>{chosen.add(flavors[current].id);updateSelection();openOrder();});
-checkboxes.addEventListener('change',e=>{if(e.target.matches('input')){if(e.target.checked)chosen.add(e.target.value);else chosen.delete(e.target.value);updateSelection();}});
-const dateInput=$('input[name="date"]');const today=new Date();dateInput.min=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
-$('#order-form').addEventListener('submit',e=>{
- e.preventDefault();if(!e.target.reportValidity())return;const data=new FormData(e.target);
- const message=buildOrderMessage({flavors:flavors.filter(f=>chosen.has(f.id)).map(f=>f.name),guests:data.get('guests'),date:data.get('date'),notes:data.get('notes')});
- window.open(whatsappUrl(message),'_blank','noopener,noreferrer');
-});
-$('#privacy-open').addEventListener('click',()=>{focusReturn=document.activeElement;$('#privacy-dialog').showModal();});
-document.querySelectorAll('dialog').forEach(d=>{d.querySelector('.dialog-close').addEventListener('click',()=>d.close());d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}});d.addEventListener('close',()=>focusReturn?.focus());});
+$('#order-flavors').addEventListener('change',e=>{if(e.target.matches('input')){if(e.target.checked)chosen.add(e.target.value);else chosen.delete(e.target.value);updateSelection();}});
+const date=$('input[name="date"]'),today=new Date();date.min=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
+$('#order-form').addEventListener('submit',e=>{e.preventDefault();if(!e.target.reportValidity())return;const data=new FormData(e.target);const message=buildOrderMessage({flavors:flavors.filter(f=>chosen.has(f.id)).map(f=>f.name),guests:data.get('guests'),date:data.get('date'),notes:data.get('notes')});window.open(whatsappUrl(message),'_blank','noopener,noreferrer');});
+$('#privacy-open').addEventListener('click',()=>{returnFocus=document.activeElement;$('#privacy-dialog').showModal();});
+document.querySelectorAll('dialog').forEach(d=>{d.querySelector('.dialog-close').addEventListener('click',()=>d.close());d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}});d.addEventListener('close',()=>returnFocus?.focus());});
 $('#business-link').href=whatsappUrl('¡Hola, DPD Cake! Me gustaría consultar vuestros postres para mi negocio o evento.');$('#year').textContent=new Date().getFullYear();
-// Keep the catalog and orders usable even if 3D is unsupported or its bundle cannot load.
-function showFallback(){const image=$('.cake-fallback');image.hidden=false;$('#cake-canvas').hidden=true;$('#cake-hint').textContent='ELIGE TU SABOR EN LA CARTA.';$('#cake-stage').classList.add('loaded');}
-import('./cake.js').then(({createCake})=>{cake=createCake($('#cake-canvas'),flavors,{onChoose:jumpTo,reducedMotion:reduced,onReady:()=>$('#cake-stage').classList.add('loaded')});if(!cake)showFallback();else cake.setFlavor(current);}).catch(showFallback);
-window.addEventListener('pagehide',e=>{if(!e.persisted)cake?.dispose();});
+// Decode the small product cutouts before they enter the scroll experience.
+for(const f of flavors){const preload=new Image();preload.src=f.image;}
+if(!reduced){gsap.fromTo('.hero-copy>h1',{opacity:0,y:30},{opacity:1,y:0,duration:.9,ease:'power3.out'});gsap.fromTo('.hero-product',{opacity:0,scale:.95},{opacity:1,scale:1,duration:1.1,ease:'power2.out'});}

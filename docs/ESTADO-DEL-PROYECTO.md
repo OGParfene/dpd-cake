@@ -1,37 +1,34 @@
 # Estado del proyecto
 
-## Código
+## Repositorio
 
-Aplicación estática Vite con JavaScript, Three.js y GSAP. El catálogo, colores y materiales se editan en `src/catalog.js`; las piezas se generan en `src/cake.js` y `src/geometry.js`; la selección y WhatsApp están en `src/main.js`.
+https://github.com/OGParfene/dpd-cake
+
+Repositorio público creado por el usuario. El historial inicial remoto se ha conservado y se ha unido al historial local de DPD Cake. La rama de trabajo y producción es `main`. Contiene código, documentación, catálogo, recursos actuales y materiales maestros. Las versiones anteriores permanecen en el historial.
 
 ## Publicación
 
 - Web: https://dpdcake.vercel.app/
-- Proveedor: Vercel.
-- Equipo del usuario: ogparfenes-projects.
-- Proyecto: dpdcake.
+- Vercel: equipo ogparfenes-projects, proyecto dpdcake.
 - Project ID: prj_yqGeMAeM6o1E0ynbAe3GVhZK284D.
 - Team ID: team_QFLT1K8ZehExUwOIS2LvOZ05.
-- Configuración: `vercel.json`; build `npm run build`, directorio `dist`.
+- Build: `npm run build`; salida: `dist`.
+- Configuración: `vercel.json`.
 
-## GitHub
+Las publicaciones se verifican con el estado de despliegue de Vercel. No se afirma que exista publicación automática por cada push hasta que se haya confirmado el enlace Git del proyecto existente.
 
-El usuario ha autorizado crear un repositorio privado `OGParfene/dpdcake`. Se han intentado los dos mecanismos soportados con la conexión autenticada como OGParfene:
+## Implementación actual
 
-1. `gh repo create`: `Resource not accessible by integration (createRepository)`.
-2. API REST `POST /user/repos`: HTTP 403, `Resource not accessible by integration`.
+Vite, JavaScript, GSAP y recursos WebP con transparencia. Sin Three.js, canvas ni modelos 3D. Diez sabores, imágenes ligadas al scroll, navegación directa, filtros de carta, selección múltiple y consulta de WhatsApp al +34 601 082 383.
 
-Por tanto, la creación remota no está completada. No se ha inventado una URL de repositorio ni se ha afirmado que exista. El código y documentación están versionados en Git local y se entregan como ZIP y bundle importable. Tras habilitar la creación de repositorios en la conexión, o crear el repositorio privado vacío, se podrá añadir `origin`, hacer push y conectar el Git de Vercel.
-
-## Verificación
-
-Pruebas de lógica de catálogo, scroll y geometría 3D; pruebas de interacción DOM de selección múltiple, modificación del pedido, modo de movimiento reducido y mensaje WhatsApp. Compilación de producción. La revisión visual y de WebGL en un navegador real está pendiente porque no hay herramienta de navegador conectada disponible en esta sesión. No confundir estas pruebas con una validación visual.
+No hay backend, persistencia de datos del visitante, analítica ni cookies publicitarias. Los campos preparan un mensaje local; el usuario decide cuándo enviarlo en WhatsApp.
 
 ## Pendientes de contenido
 
-- Archivos originales descargables de las piezas recibidas en el chat.
-- Logo DPD Cake de alta resolución.
-- Medidas, precios y guía de tamaños oficiales.
-- Condiciones de recogida, entrega y antelación.
-- Confirmación de Black Bull y del colaborador «Desde Cero».
+- Archivos originales descargables de las publicaciones adjuntas al chat.
+- Archivo vectorial original del logo: se conserva la miniatura recuperada y se añade una reinterpretación nítida autorizada por el usuario.
+- Tamaños, raciones, precios y condiciones de entrega oficiales.
+- Confirmación del cliente Black Bull concreto y del colaborador «Desde Cero».
 - Nombres de los festivales patrocinados.
+
+No se han inventado esos datos. El negocio los confirma por WhatsApp.

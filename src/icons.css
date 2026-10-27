@@ -32,3 +32,13 @@
 .ph.ph-eye:before {
   content: "\e220";
 }
+
+.ph.ph-arrow-down-right:before {
+  content: "\e042";
+}
+.ph.ph-arrow-bend-down-right:before {
+  content: "\e01a";
+}
+.ph.ph-star-four:before {
+  content: "\e6a4";
+}
