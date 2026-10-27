@@ -7,6 +7,7 @@ const $=s=>document.querySelector(s);
 const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const chosen=new Set();const story=$('#flavor-story');const stage=$('.flavor-stage');
 let current=-1,framePending=false,forcedIndex=null,jumpTimer,feedbackTimer;
+let requestedFlavor=0,transitioning=false,directRequest=false,transitionVersion=0;
 const image=$('#feature-product'),name=$('#feature-name'),description=$('#feature-description');
 const grid=$('#catalog-grid');let filter='all';
 function renderCatalog(){
@@ -23,26 +24,50 @@ function updateSelection(){
 function toggleFlavor(id){
  const f=flavors.find(f=>f.id===id);if(chosen.has(id))chosen.delete(id);else chosen.add(id);updateSelection();clearTimeout(feedbackTimer);$('#selection-feedback').textContent=chosen.has(id)?`${f.name} añadida. ¿Otro antojo?`:`${f.name} quitada de tu consulta.`;feedbackTimer=setTimeout(()=>$('#selection-feedback').textContent='',3500);
 }
-function applyFlavor(index,initial=false){
- if(index===current)return;current=index;const f=flavors[index];stage.style.setProperty('--scene',f.paper);
+function showFlavor(index){
+ current=index;const f=flavors[index];stage.style.setProperty('--scene',f.paper);
  $('#feature-number').textContent=String(index+1).padStart(2,'0');$('#feature-counter').textContent=`${String(index+1).padStart(2,'0')} — 10`;$('#feature-type').textContent=f.id==='tres-chocolates'?'SPECIAL CAKE':'CHEESECAKE';
  document.querySelectorAll('[data-explore]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.explore)===index)));
  $('#prev-flavor').disabled=index===0;$('#next-flavor').disabled=index===flavors.length-1;
- const swap=()=>{image.src=f.image;image.alt=`Composición de cheesecake ${f.name}`;name.textContent=f.name+'.';description.textContent=f.description;};
- if(initial||reduced){swap();}else{
-  gsap.killTweensOf([image,name,description]);const direction=index%2?1:-1;
-  gsap.to([image,name,description],{opacity:0,duration:.13,onComplete:()=>{swap();gsap.fromTo(image,{opacity:0,x:direction*45,rotation:direction*4,scale:.96},{opacity:1,x:0,rotation:-8,scale:1,duration:.6,ease:'power3.out'});gsap.fromTo([name,description],{opacity:0,y:15},{opacity:1,y:0,duration:.4,stagger:.04,ease:'power2.out'});}});
- }
+ image.src=f.image;image.alt=`Composición de cheesecake ${f.name}`;name.textContent=f.name+'.';description.textContent=f.description;
  updateSelection();
 }
+function animateNextFlavor(){
+ if(transitioning||requestedFlavor===current)return;
+ // Finish each adjacent flavor before moving on, even after a large scroll gesture.
+ const next=directRequest?requestedFlavor:current+Math.sign(requestedFlavor-current);
+ const direction=next>current?1:-1,version=++transitionVersion;transitioning=true;
+ gsap.to([image,name,description],{opacity:0,duration:.22,ease:'power1.inOut',onComplete:()=>{
+  if(version!==transitionVersion)return;showFlavor(next);
+  gsap.fromTo(image,{opacity:0,x:direction*28,rotation:direction*2,scale:.985},{opacity:1,x:0,rotation:-8,scale:1,duration:.85,ease:'power2.out',onComplete:()=>{
+   if(version!==transitionVersion)return;transitioning=false;animateNextFlavor();
+  }});
+  gsap.fromTo([name,description],{opacity:0,y:10},{opacity:1,y:0,duration:.55,stagger:.05,ease:'power2.out'});
+ }});
+}
+function applyFlavor(index,immediate=false,direct=false){
+ requestedFlavor=index;directRequest=direct;
+ if(immediate||reduced){
+  if(index===current&&!transitioning)return;
+  // Jumping past the section should not leave a backlog of invisible transitions.
+  transitionVersion++;transitioning=false;gsap.killTweensOf([image,name,description]);showFlavor(index);
+  gsap.set([image,name,description],{opacity:1,x:0,y:0});gsap.set(image,{rotation:-8,scale:1});return;
+ }
+ animateNextFlavor();
+}
 function jumpTo(index){
- index=Math.max(0,Math.min(flavors.length-1,index));forcedIndex=index;clearTimeout(jumpTimer);applyFlavor(index);
+ index=Math.max(0,Math.min(flavors.length-1,index));forcedIndex=index;clearTimeout(jumpTimer);applyFlavor(index,false,true);
  if(reduced){story.scrollIntoView({behavior:'instant',block:'start'});return;}
  const top=story.offsetTop+(index+.35)/flavors.length*Math.max(1,story.offsetHeight-window.innerHeight);window.scrollTo({top,behavior:'smooth'});jumpTimer=setTimeout(()=>{forcedIndex=null;},900);
 }
 function onScroll(){
  if(framePending)return;framePending=true;requestAnimationFrame(()=>{framePending=false;
-  if(!reduced){const state=getScrollState(window.scrollY,story.offsetTop,story.offsetHeight,window.innerHeight,flavors.length);applyFlavor(forcedIndex??state.index);const y=Math.min(window.scrollY,900);$('.hero-product').style.transform=`translateY(${y*.11}px) rotate(${-13+y*.009}deg)`;}
+  if(!reduced){
+   const state=getScrollState(window.scrollY,story.offsetTop,story.offsetHeight,window.innerHeight,flavors.length);
+   const outside=window.scrollY<story.offsetTop||window.scrollY>story.offsetTop+story.offsetHeight-window.innerHeight;
+   applyFlavor(forcedIndex??state.index,outside&&forcedIndex===null,forcedIndex!==null);
+   const y=Math.min(window.scrollY,900);$('.hero-product').style.transform=`translateY(${y*.11}px) rotate(${-13+y*.009}deg)`;
+  }
  });
 }
 renderCatalog();applyFlavor(0,true);

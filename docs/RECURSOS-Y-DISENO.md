@@ -4,7 +4,7 @@
 
 La web actual retira el modelo 3D procedural y Three.js. Utiliza composiciones fotográficas de porciones, fondos de color suaves, mucho espacio y jerarquía tipográfica. El amarillo y el logo son los elementos principales de la marca. La letra de pincel se reserva para acentos, siguiendo las publicaciones.
 
-La navegación consiste en una portada breve, una degustación de sabores ligada al scroll, una carta con filtros y una consulta de pedido por WhatsApp. El recorrido de sabores ocupa unas cuatro alturas de pantalla, con botones para saltar directamente a cualquier sabor y alternativa sin animaciones.
+La navegación consiste en una portada breve, una degustación de sabores ligada al scroll, una carta con filtros y una consulta de pedido por WhatsApp. El recorrido de sabores ocupa unas diez alturas de pantalla, con botones para saltar directamente a cualquier sabor y alternativa sin animaciones.
 
 ## Recursos nuevos
 
