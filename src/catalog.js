@@ -92,9 +92,10 @@ export const flavors = [
   }
 ];
 export const whatsappUrl=message=>`https://wa.me/34601082383?text=${encodeURIComponent(message)}`;
-export function buildOrderMessage({flavors:chosen=[],flavor,guests,date,notes}={}){
+export function buildOrderMessage({flavors:chosen=[],flavor,size,guests,date,notes}={}){
  const names=chosen.length?chosen:flavor?[flavor]:[];
  const lines=['¡Hola, DPD Cake! Me gustaría consultar un encargo.',names.length?`Sabores: ${names.join(', ')}.`:'Me gustaría que me recomendarais un sabor.'];
+ if(size)lines.push(`Tamaño solicitado: ${size}.`);
  if(guests)lines.push(`Personas: ${guests}.`);
  if(date){const [y,m,d]=date.split('-');lines.push(`Fecha deseada: ${d}/${m}/${y}.`);}
  if(notes?.trim())lines.push(`Detalles: ${notes.trim()}`);

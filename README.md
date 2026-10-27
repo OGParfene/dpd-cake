@@ -54,7 +54,7 @@ WhatsApp: +34 601 082 383. Se prepara un mensaje con los sabores, personas, fech
 
 ## Privacidad y accesibilidad
 
-Sin analítica, cookies publicitarias, backend ni almacenamiento de datos del visitante. Google Fonts sirve las tipografías; se indica en Privacidad. Formularios etiquetados, foco visible, diálogos nativos y soporte de movimiento reducido.
+Sin analítica, cookies publicitarias, backend ni almacenamiento de datos del visitante. Las tipografías se alojan localmente; no se contacta con Google Fonts durante la navegación. Formularios etiquetados, foco visible, diálogos nativos y soporte de movimiento reducido.
 
 ## Verificación
 
