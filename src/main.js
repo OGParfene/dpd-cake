@@ -1,36 +1,54 @@
 import './style.css';
 import './icons.css';
 import {gsap} from 'gsap';
-import {flavors,buildOrderMessage,instagramDMUrl,getScrollState} from './catalog.js';
+import {flavors,categories,cookieChunks,cookieFillings,buildOrderMessage,instagramDMUrl,getScrollState} from './catalog.js';
 
 const $=s=>document.querySelector(s);
 const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const chosen=new Set();const story=$('#flavor-story');const stage=$('.flavor-stage');
 let current=-1,framePending=false,forcedIndex=null,jumpTimer,feedbackTimer;
+let storyFlavors=flavors;
 let requestedFlavor=0,transitioning=false,directRequest=false,transitionVersion=0;
 const image=$('#feature-product'),name=$('#feature-name'),description=$('#feature-description');
 const grid=$('#catalog-grid');let filter='all';
 function renderCatalog(){
- grid.innerHTML=flavors.filter(f=>filter==='all'||f.category===filter).map(f=>`<article class="product-card"><div class="product-art" style="--flavor-paper:${f.paper}"><span>${String(flavors.indexOf(f)+1).padStart(2,'0')}</span><img src="${f.image}" alt="Composición de cheesecake ${f.name}" width="512" height="307" loading="lazy"/><button data-add="${f.id}" aria-label="Añadir ${f.name} a mi pedido" aria-pressed="false"><i class="ph ph-plus" aria-hidden="true"></i></button></div><h3>${f.name}</h3><p>${f.description}</p></article>`).join('');updateSelection();
+ grid.innerHTML=flavors.filter(f=>filter==='all'||f.category===filter).map(f=>`<article class="product-card"><div class="product-art" style="--flavor-paper:${f.paper}"><span>${String(flavors.indexOf(f)+1).padStart(2,'0')}</span><img src="${f.image}" alt="Imagen de presentación de ${f.name}" width="512" height="340" loading="lazy"/><button data-add="${f.id}" aria-label="Añadir ${f.name} a mi pedido" aria-pressed="false"><i class="ph ph-plus" aria-hidden="true"></i></button></div><h3>${f.name}</h3><p>${f.description}</p></article>`).join('');updateSelection();
 }
-$('#flavor-dots').innerHTML=flavors.map((f,i)=>`<button data-explore="${i}" aria-label="Ver ${f.name}" aria-pressed="${i===0}"></button>`).join('');
-$('#order-flavors').insertAdjacentHTML('beforeend',flavors.map(f=>`<label class="flavor-checkbox"><input type="checkbox" value="${f.id}" name="flavors"/><span>${f.name}</span></label>`).join(''));
+function renderDots(){
+ $('#flavor-dots').innerHTML=storyFlavors.map((f,i)=>`<button data-explore="${i}" aria-label="Ver ${f.name}" aria-pressed="${i===current}"></button>`).join('');
+}
+function renderFilters(container,attribute){
+ $(container).innerHTML=categories.map(c=>`<button ${attribute}="${c.id}" class="${c.id==='all'?'active':''}" aria-pressed="${c.id==='all'}">${c.name}<span>${flavors.filter(f=>c.id==='all'||f.category===c.id).length}</span></button>`).join('');
+}
+renderFilters('#story-filters','data-story-filter');renderFilters('#catalog-filters','data-filter');
+$('#order-flavors').insertAdjacentHTML('beforeend',categories.filter(c=>c.id!=='all').map(c=>`<fieldset class="order-category"><legend>${c.name}</legend>${flavors.filter(f=>f.category===c.id).map(f=>`<label class="flavor-checkbox"><input type="checkbox" value="${f.id}" name="flavors"/><span>${f.name}</span></label>`).join('')}</fieldset>`).join(''));
+$('#cookie-options').innerHTML=`<h3>Cookies a tu manera.</h3><p>Elige los trozos y el relleno de cada tipo de cookie.</p>${flavors.filter(f=>f.category==='cookies').map(f=>`<fieldset data-cookie-options="${f.id}" hidden disabled><legend>${f.name}</legend><div class="cookie-chunks"><span>Trozos · puedes combinar</span>${cookieChunks.map(chunk=>`<label class="flavor-checkbox"><input type="checkbox" name="${f.id}-chunks" value="${chunk}"/><span>${chunk}</span></label>`).join('')}</div><label>Relleno<select name="${f.id}-filling"><option value="">Lo consulto con vosotros</option><option>Sin relleno</option>${cookieFillings.map(fill=>`<option>${fill}</option>`).join('')}</select></label></fieldset>`).join('')}<p class="cookie-note">Elegir chocolate sin lactosa como trozo no significa que toda la cookie sea sin lactosa. Consulta los ingredientes y alérgenos.</p>`;
+function updateCookieOptions(){
+ const cookiesSelected=flavors.some(f=>f.category==='cookies'&&chosen.has(f.id));
+ $('#cookie-options').hidden=!cookiesSelected;
+ document.querySelectorAll('[data-cookie-options]').forEach(field=>{const active=chosen.has(field.dataset.cookieOptions);field.hidden=!active;field.disabled=!active;});
+ const cakesSelected=!chosen.size||flavors.some(f=>chosen.has(f.id)&&['queso','tartas'].includes(f.category));
+ $('.size-label').hidden=!cakesSelected;$('[name="size"]').disabled=!cakesSelected;
+}
 function updateSelection(){
  const count=chosen.size;$('#selection-count').textContent=count;$('#basket-count').textContent=count;$('.basket-button').classList.toggle('has-items',count>0);
  document.querySelectorAll('[data-add]').forEach(b=>{const selected=chosen.has(b.dataset.add);const f=flavors.find(f=>f.id===b.dataset.add);b.setAttribute('aria-pressed',String(selected));b.setAttribute('aria-label',`${selected?'Quitar':'Añadir'} ${f.name} ${selected?'de':'a'} mi pedido`);b.querySelector('i').className=`ph ph-${selected?'check':'plus'}`;});
  document.querySelectorAll('input[name="flavors"]').forEach(input=>input.checked=chosen.has(input.value));
- const selected=chosen.has(flavors[Math.max(0,current)].id);const button=$('#feature-add');button.classList.toggle('is-selected',selected);button.setAttribute('aria-pressed',String(selected));button.querySelector('span').textContent=selected?'En mi pedido':'La quiero';button.querySelector('i').className=`ph ph-${selected?'check':'plus'}`;
- refreshSummary();
+ const selected=chosen.has(storyFlavors[Math.max(0,current)].id);const button=$('#feature-add');button.classList.toggle('is-selected',selected);button.setAttribute('aria-pressed',String(selected));button.querySelector('span').textContent=selected?'En mi pedido':'La quiero';button.querySelector('i').className=`ph ph-${selected?'check':'plus'}`;
+ updateCookieOptions();refreshSummary();
 }
 function toggleFlavor(id){
  const f=flavors.find(f=>f.id===id);if(chosen.has(id))chosen.delete(id);else chosen.add(id);updateSelection();clearTimeout(feedbackTimer);$('#selection-feedback').textContent=chosen.has(id)?`${f.name} añadida. ¿Otro antojo?`:`${f.name} quitada de tu consulta.`;feedbackTimer=setTimeout(()=>$('#selection-feedback').textContent='',3500);
 }
 function showFlavor(index){
- current=index;const f=flavors[index];stage.style.setProperty('--scene',f.paper);
- $('#feature-number').textContent=String(index+1).padStart(2,'0');$('#feature-counter').textContent=`${String(index+1).padStart(2,'0')} — 10`;$('#feature-type').textContent=f.id==='tres-chocolates'?'SPECIAL CAKE':'CHEESECAKE';
+ current=index;const f=storyFlavors[index];stage.style.setProperty('--scene',f.paper);
+ $('#feature-number').textContent=String(index+1).padStart(2,'0');$('#feature-counter').textContent=`${String(index+1).padStart(2,'0')} — ${String(storyFlavors.length).padStart(2,'0')}`;$('#feature-type').textContent=({queso:'CHEESECAKE',tartas:'SPECIAL CAKE',cookies:'COOKIES',brownie:'BROWNIES'})[f.category];
  document.querySelectorAll('[data-explore]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.explore)===index)));
- $('#prev-flavor').disabled=index===0;$('#next-flavor').disabled=index===flavors.length-1;
- image.src=f.image;image.alt=`Composición de cheesecake ${f.name}`;name.textContent=f.name+'.';description.textContent=f.description;
+ $('#feature-total').textContent=storyFlavors.length;
+ const activeDot=$('#flavor-dots [aria-pressed="true"]');if(activeDot)$('#flavor-dots').scrollLeft=activeDot.offsetLeft-$('#flavor-dots').clientWidth/2;
+ $('#prev-flavor').disabled=index===0;$('#next-flavor').disabled=index===storyFlavors.length-1;
+ for(const next of [storyFlavors[index-1],storyFlavors[index+1]])if(next){const adjacent=new Image();adjacent.src=next.image;}
+ image.src=f.image;image.alt=`Imagen de presentación de ${f.name}`;name.textContent=f.name+'.';description.textContent=f.description;
  updateSelection();
 }
 function animateNextFlavor(){
@@ -57,23 +75,36 @@ function applyFlavor(index,immediate=false,direct=false){
  animateNextFlavor();
 }
 function jumpTo(index){
- index=Math.max(0,Math.min(flavors.length-1,index));forcedIndex=index;clearTimeout(jumpTimer);applyFlavor(index,false,true);
+ index=Math.max(0,Math.min(storyFlavors.length-1,index));forcedIndex=index;clearTimeout(jumpTimer);applyFlavor(index,false,true);
  if(reduced){story.scrollIntoView({behavior:'instant',block:'start'});return;}
- const top=story.offsetTop+(index+.35)/flavors.length*Math.max(1,story.offsetHeight-window.innerHeight);window.scrollTo({top,behavior:'smooth'});jumpTimer=setTimeout(()=>{forcedIndex=null;},900);
+ const top=story.offsetTop+(index+.35)/storyFlavors.length*Math.max(1,story.offsetHeight-window.innerHeight);window.scrollTo({top,behavior:'smooth'});jumpTimer=setTimeout(()=>{forcedIndex=null;},900);
 }
 function onScroll(){
  if(framePending)return;framePending=true;requestAnimationFrame(()=>{framePending=false;
   if(!reduced){
-   const state=getScrollState(window.scrollY,story.offsetTop,story.offsetHeight,window.innerHeight,flavors.length);
+   const state=getScrollState(window.scrollY,story.offsetTop,story.offsetHeight,window.innerHeight,storyFlavors.length);
    const outside=window.scrollY<story.offsetTop||window.scrollY>story.offsetTop+story.offsetHeight-window.innerHeight;
    applyFlavor(forcedIndex??state.index,outside&&forcedIndex===null,forcedIndex!==null);
    const y=Math.min(window.scrollY,900);$('.hero-product').style.transform=`translateY(${y*.11}px) rotate(${-13+y*.009}deg)`;
   }
  });
 }
-renderCatalog();applyFlavor(0,true);
+function setStoryHeight(){story.style.setProperty('--story-height',`${50+storyFlavors.length*100}svh`);}
+renderDots();setStoryHeight();renderCatalog();applyFlavor(0,true);
+$('#story-filters').addEventListener('click',e=>{
+ const b=e.target.closest('[data-story-filter]');if(!b||b.getAttribute('aria-pressed')==='true')return;
+ const previous=storyFlavors[Math.max(0,current)]?.id;
+ storyFlavors=flavors.filter(f=>b.dataset.storyFilter==='all'||f.category===b.dataset.storyFilter);
+ document.querySelectorAll('[data-story-filter]').forEach(button=>{button.classList.toggle('active',button===b);button.setAttribute('aria-pressed',String(button===b));});
+ clearTimeout(jumpTimer);forcedIndex=null;renderDots();setStoryHeight();
+ const index=Math.max(0,storyFlavors.findIndex(f=>f.id===previous));
+ // Reset the in-flight transition before changing the meaning of its indices.
+ current=-1;applyFlavor(index,true);forcedIndex=index;
+ if(!reduced){const top=story.offsetTop+(index+.35)/storyFlavors.length*Math.max(1,story.offsetHeight-window.innerHeight);window.scrollTo({top,behavior:'instant'});}
+ jumpTimer=setTimeout(()=>{forcedIndex=null;},100);
+});
 window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll);onScroll();
-$('#prev-flavor').addEventListener('click',()=>jumpTo(current-1));$('#next-flavor').addEventListener('click',()=>jumpTo(current+1));$('#feature-add').addEventListener('click',()=>toggleFlavor(flavors[current].id));
+$('#prev-flavor').addEventListener('click',()=>jumpTo(current-1));$('#next-flavor').addEventListener('click',()=>jumpTo(current+1));$('#feature-add').addEventListener('click',()=>toggleFlavor(storyFlavors[current].id));
 $('#flavor-dots').addEventListener('click',e=>{const b=e.target.closest('[data-explore]');if(b)jumpTo(Number(b.dataset.explore));});
 grid.addEventListener('click',e=>{const b=e.target.closest('[data-add]');if(b)toggleFlavor(b.dataset.add);});
 document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(button=>{button.classList.toggle('active',button===b);button.setAttribute('aria-pressed',String(button===b));});renderCatalog();}));
@@ -84,7 +115,7 @@ $('#order-flavors').addEventListener('change',e=>{if(e.target.matches('input')){
 const date=$('input[name="date"]'),today=new Date();date.min=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
 function currentOrderMessage(){
  const data=new FormData($('#order-form'));
- return buildOrderMessage({flavors:flavors.filter(f=>chosen.has(f.id)).map(f=>f.name),size:data.get('size'),guests:data.get('guests'),date:data.get('date'),notes:data.get('notes')});
+ return buildOrderMessage({flavors:flavors.filter(f=>chosen.has(f.id)).map(f=>f.name),size:data.get('size'),guests:data.get('guests'),date:data.get('date'),notes:data.get('notes'),cookies:flavors.filter(f=>f.category==='cookies'&&chosen.has(f.id)).map(f=>({name:f.name,chunks:data.getAll(`${f.id}-chunks`),filling:data.get(`${f.id}-filling`)}))});
 }
 function refreshSummary(){
  if($('#instagram-review').hidden)return;
@@ -107,6 +138,5 @@ $('#copy-instagram').addEventListener('click',()=>{
 });
 document.querySelectorAll('dialog').forEach(d=>{d.querySelector('.dialog-close').addEventListener('click',()=>d.close());d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}});d.addEventListener('close',()=>returnFocus?.focus());});
 $('#business-link').href=instagramDMUrl;$('#year').textContent=new Date().getFullYear();
-// Decode the small product cutouts before they enter the scroll experience.
-for(const f of flavors){const preload=new Image();preload.src=f.image;}
+// Card images load lazily; neighboring scene images are prefetched in showFlavor.
 if(!reduced){gsap.fromTo('.hero-copy>h1',{opacity:0,y:30},{opacity:1,y:0,duration:.9,ease:'power3.out'});gsap.fromTo('.hero-product',{opacity:0,scale:.95},{opacity:1,scale:1,duration:1.1,ease:'power2.out'});}

@@ -1,6 +1,6 @@
 # DPD Cake
 
-Web de DPD Cake: diez sabores, una carta visual y pedidos por Instagram.
+Web de DPD Cake: 29 productos, una carta visual y pedidos por Instagram.
 
 **Web:** https://dpdcake.vercel.app/  
 **Repositorio:** https://github.com/OGParfene/dpd-cake
@@ -21,10 +21,11 @@ Vite genera `dist/`. La configuración de publicación está en `vercel.json`.
 
 ## Qué contiene
 
-- Catálogo de diez sabores confirmado por las publicaciones de DPD Cake.
+- Catálogo de 29 productos confirmado por el usuario: 24 tartas de queso, tres chocolates, dos cookies y dos brownies.
 - Composiciones de producto en WebP y logo limpio de alta resolución.
 - Degustación visual al hacer scroll, navegación directa y alternativa sin movimiento.
-- Filtros y selección de varios sabores para preparar una consulta por Instagram.
+- Filtros por categoría en el recorrido animado y en la carta, sin perder las selecciones.
+- Cookies con trozos y rellenos independientes para cada tipo, incluidos en el resumen para Instagram.
 - Clientes, Instagram, contacto y privacidad.
 - Documentación de marca, recursos maestros y archivo de versiones anteriores.
 
@@ -50,7 +51,7 @@ La web actual utiliza imágenes de presentación; no utiliza modelos 3D. Los mat
 
 ## Pedidos
 
-Instagram: [@dpdcake](https://www.instagram.com/dpdcake/). Teléfono: +34 601 082 383. Se prepara un resumen con los sabores, tamaño, personas, fecha y notas. El visitante lo copia, abre Instagram y lo pega y envía manualmente en el chat de @dpdcake. DPD Cake confirma formato, precio, disponibilidad, ingredientes y recogida o entrega antes de cerrar el pedido.
+Instagram: [@dpdcake](https://www.instagram.com/dpdcake/). Teléfono: +34 601 082 383. Se prepara un resumen con los productos, tamaño de las tartas, personas, fecha, notas y personalización de cada tipo de cookie. El visitante lo copia, abre Instagram y lo pega y envía manualmente en el chat de @dpdcake. DPD Cake confirma formato, precio, disponibilidad, ingredientes y recogida o entrega antes de cerrar el pedido.
 
 ## Privacidad y accesibilidad
 

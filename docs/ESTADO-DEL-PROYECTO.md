@@ -19,7 +19,7 @@ Las publicaciones se verifican con el estado de despliegue de Vercel. No se afir
 
 ## Implementación actual
 
-Vite, JavaScript, GSAP y recursos WebP con transparencia. Sin Three.js, canvas ni modelos 3D. Diez sabores, imágenes ligadas al scroll, navegación directa, filtros de carta, selección múltiple y consulta por mensaje directo a @dpdcake.
+Vite, JavaScript, GSAP y recursos WebP con transparencia. Sin Three.js, canvas ni modelos 3D. 29 productos, imágenes ligadas al scroll, navegación directa, filtros de recorrido y carta, personalización de cookies, selección múltiple y consulta por mensaje directo a @dpdcake.
 
 No hay backend, persistencia de datos del visitante, analítica ni cookies publicitarias. Los campos preparan un mensaje local; el usuario decide cuándo enviarlo en Instagram.
 

@@ -1,35 +1,33 @@
 # DPD Cake — marca, catálogo y referencias
 
-Actualizado el 27/10/2026. Información facilitada por el usuario y piezas gráficas adjuntas en esta conversación. El catálogo de estas piezas sustituye las referencias provisionales de la primera versión.
+Actualizado el 28/10/2026. Información facilitada por el usuario y piezas gráficas adjuntas en esta conversación. La lista ampliada enviada por el usuario el 28/10/2026 prevalece sobre las piezas iniciales.
 
 ## Identidad
 
 - Nombre comercial: DPD Cake.
 - Actividad: tartas de queso, tres chocolates y postres por encargo; suministro a negocios y colaboraciones.
 - Instagram: https://www.instagram.com/dpdcake/
-- Teléfono y WhatsApp: +34 601 082 383.
+- Teléfono: +34 601 082 383.
 - Logo: amarillo dorado, contorno negro y letras gruesas con volumen. El archivo recuperado es una miniatura pública de 100 × 100; falta el original de alta resolución.
 - Lenguaje de las piezas: letras blancas de pincel, grafitis de fondo, fotografías de porciones, marcos blancos tipo polaroid y fondos cálidos que varían según el sabor. Amarillo y blanco para presentación general; verde para pistacho y marrones oscuros para chocolate.
-- Preferencia del usuario: web simple, poco texto, descripción breve por sabor y consulta por WhatsApp. Animaciones ligadas al scroll, tarta protagonista, porciones que se desplazan y fondos que cambian. Selección directa de sabores.
+- Preferencia del usuario: web simple, poco texto, descripción breve por sabor y consulta por Instagram. Animaciones ligadas al scroll, tarta protagonista, porciones que se desplazan y fondos que cambian. Selección directa de sabores.
 
-## Catálogo confirmado por las piezas
+## Catálogo confirmado por el usuario
 
-| Sabor | Mensaje de la pieza, resumido | Color de referencia |
-| --- | --- | --- |
-| Tradicional | La sencillez de una tarta de queso bien hecha; queso y dulzura. | Dorado y caramelo |
-| Frutas | Color a tu vida y queso, por supuesto. | Coral y naranja |
-| Cabrales | Mucha personalidad, suavidad y cremosidad. | Amarillo cálido |
-| Dark Chocolate | Oscura, intensa y dulce; cheesecake de chocolate negro by Pérez. | Chocolate oscuro |
-| Crumble Cookie | Fusión de galleta y queso fundido. | Galleta y caramelo |
-| Ron y pasas | La más rebelde: ron y pasas. | Caramelo oscuro |
-| Happy Hippo | Cheesecake con sabor de Happy Hippo, cremosidad suave y diversión. Dos piezas del mismo sabor, con distintos textos. | Crema y caramelo |
-| Tres chocolates | Receta de la casa; tres sabores combinados. | Tres marrones y crema |
-| Pistacho | Un toque sorprendente y una combinación irresistible. | Verde pistacho |
-| Brownie | Brownie y tarta de queso combinados. | Marrón chocolate |
+29 productos. Las categorías `trozos` y `relleno` son componentes de las cookies, no productos independientes.
 
-La pieza «Desde Cero Cake» muestra DPD Cake × un colaborador; no identifica un sabor adicional. No se convierte automáticamente en un producto nuevo. Identidad del segundo logo pendiente de confirmación.
+- **Tartas de queso (24):** Tradicional, Oreo, Lotus, Kinder Bueno, Kinder Bueno blanco, Kinder Joy, Chocolate negro, Chocolate con leche, Cookies, Crumble cookies, Pistacho, Baileys, Brownie (mostrado como Queso brownie para distinguirlo del brownie de chocolate), Frutas (La Villa), Manzana, Ron y pasas, Cabrales, Queso de cabra, Tartufa, Pantera Rosa, Happy Hippo, Limón, Desde Cero (Chocoflakes), Dulce de leche.
+- **Otras tartas (1):** Tres chocolates.
+- **Cookies (2):** Cookie Crumble y Cookie clásica (normal).
+- **Brownies (2):** Brownie de chocolate y Browkie.
+- **Trozos para cookies (4):** Chocolate con leche, Chocolate sin lactosa, Pistacho y Fresas deshidratadas. Se pueden marcar varios.
+- **Rellenos para cookies (3):** Chocolate negro, Chocolate con leche y Chocolate blanco. También se puede consultar el relleno o pedir sin relleno.
 
-No se publican medidas, pesos, raciones, precios ni ingredientes exhaustivos porque todavía no se ha recibido una guía que los confirme. Se solicitan personas y fecha deseada; el negocio recomienda formato y confirma detalles.
+Desde Cero (Chocoflakes) es un sabor confirmado expresamente en la nueva lista. Esto actualiza la interpretación anterior de la pieza de colaboración. No se ha identificado el segundo logo de dicha pieza.
+
+Los textos nuevos son descripciones breves de presentación a partir del nombre facilitado; no describen recetas ni listas completas de ingredientes. Las imágenes nuevas son composiciones ilustrativas, no fotografías de producto real. En particular, la receta exacta de Tartufa debe confirmarse con el negocio.
+
+Tamaños de tartas facilitados por el usuario: Pequeña, Mediana y Grande. No se publican medidas, pesos, raciones, precios ni ingredientes exhaustivos porque no se han confirmado. Para pedidos que solo contienen cookies o brownies no se incluye el tamaño de tarta. El negocio confirma formato y todos los detalles por Instagram.
 
 ## Clientes y colaboraciones
 

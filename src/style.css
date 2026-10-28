@@ -19,3 +19,21 @@ select:focus-visible{outline:3px solid #40774a;outline-offset:5px}.footer-legal{
 .product-art>button[aria-pressed="true"]{transform:none;transition:background .2s}
 
 .instagram-review{margin-top:24px;border-top:1px solid #22211c30;padding-top:20px}.instagram-review[hidden]{display:none}.instagram-review h3{font-size:17px;margin:0 0 10px}.instagram-review p{font-size:10px;line-height:1.65;margin:10px 0}.instagram-review label{font-size:10px;font-weight:700;display:block;margin-bottom:8px}.instagram-review textarea{display:block;margin-bottom:14px;line-height:1.5}.instagram-review .button{width:100%;font-size:11px}.instagram-review a{text-decoration:underline}.instagram-review #copy-status{font-weight:600}@media(max-width:760px){.instagram-review textarea{font-size:16px}.instagram-review .button{font-size:10px}}
+
+/* Shared catalog categories, including the sticky tasting scene. */
+.flavor-story{height:var(--story-height,2950svh)}
+.filters{flex-wrap:wrap}.story-filters{position:absolute;top:58px;left:4%;right:4%;z-index:5;gap:6px}.story-filters button{background:#f9f6ed55;font-size:10px;padding:9px 13px}.story-filters button.active{background:var(--ink)}
+#flavor-dots{position:relative;max-width:320px;overflow-x:auto;padding:5px;scrollbar-width:thin;flex-shrink:1;justify-content:flex-start}#flavor-dots>button{flex-shrink:0}
+.feature-copy h3{overflow-wrap:break-word;font-size:clamp(48px,5.7vw,88px)}
+#order-flavors{display:block}.order-category{margin-bottom:18px}.order-category legend{font-family:'Barlow Condensed',sans-serif;font-size:23px;font-weight:700;margin-bottom:10px}
+#cookie-options{margin:0 0 22px;padding:18px;background:#e6d2a333;border-radius:12px}#cookie-options h3{font-family:'Barlow Condensed',sans-serif;font-size:28px;margin-bottom:8px}#cookie-options>p{font-size:10px;margin-bottom:16px}#cookie-options fieldset{display:block;border-top:1px solid #22211c25;padding-top:14px;margin-top:12px}#cookie-options legend{font-size:13px;font-weight:700;padding:0 8px 0 0}#cookie-options label:not(.flavor-checkbox){display:flex;flex-direction:column;gap:8px;font-size:11px;font-weight:700;margin-top:14px}.cookie-chunks{display:grid;grid-template-columns:1fr 1fr;gap:7px}.cookie-chunks>span{grid-column:1/-1;font-size:10px;font-weight:700;margin-bottom:3px}.cookie-note{font-size:9px!important;margin:15px 0 0!important}
+[hidden]{display:none!important}
+@media(max-width:1100px){.catalog-heading{align-items:flex-start;flex-direction:column}.feature-copy h3{font-size:6.5vw}}
+@media(max-width:760px){.story-filters{top:46px;left:6%;right:6%;gap:5px}.story-filters button{padding:7px 9px;font-size:8px}.story-filters button>span{font-size:7px;margin-left:5px}.feature-copy{top:21%}.feature-copy h3{font-size:clamp(40px,11vw,58px);max-width:100%;margin-bottom:10px}.feature-copy>p:not(.eyebrow){max-width:280px;font-size:10px}.feature-product-wrap{top:40%;height:34%}.feature-copy>.button{top:calc(54svh - 35px)}#selection-feedback{top:calc(54svh + 10px)}.feature-script{bottom:0;font-size:14px}#flavor-dots{max-width:100%;justify-content:flex-start;gap:5px}.filters{gap:5px}.filters button{padding:9px 11px;font-size:9px}.story-filters button{padding:7px 9px;font-size:8px}.order-category legend{font-size:22px}#cookie-options{padding:14px}.cookie-chunks{grid-template-columns:1fr}}
+@media(max-width:760px) and (max-height:700px){.feature-copy{top:23%}.feature-copy h3{font-size:38px}.feature-product-wrap{top:43%;height:30%}.feature-copy>.button{top:calc(50svh - 30px)}#selection-feedback{top:calc(50svh + 16px)}}
+@media(prefers-reduced-motion:reduce){.flavor-story{height:auto}}
+
+/* Keep mobile actions inside the scene even on very tall viewports. */
+.flavor-stage{container-type:size}
+@media(max-width:760px){.feature-copy>.button{top:calc(54cqh - 35px)}#selection-feedback{top:calc(54cqh + 10px)}.story-filters button{padding:8px 9px}}
+@media(max-width:760px) and (max-height:700px){.feature-copy>.button{top:calc(50cqh - 30px)}#selection-feedback{top:calc(50cqh + 16px)}}

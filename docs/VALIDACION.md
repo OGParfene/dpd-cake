@@ -1,9 +1,16 @@
-# Validación de la versión actual
+# Validación de la carta ampliada — 28/10/2026
 
-- Compilación Vite de producción.
-- Once pruebas automáticas de catálogo, selección múltiple, filtros que conservan el pedido, navegación directa sin movimiento, campos opcionales, codificación del mensaje de WhatsApp y límites del cálculo de scroll. También se verifica que los gestos rápidos muestran cada sabor intermedio, que la secuencia puede invertirse, que los controles directos conservan el salto solicitado y que salir de la sección elimina transiciones pendientes.
-- Validación de HTML: IDs únicos, anclas válidas e imágenes locales presentes.
-- Validación de assets: los diez sabores tienen un recurso WebP real y los materiales nuevos mantienen transparencia.
-- El modelo 3D y su dependencia se han retirado por completo de la web actual.
+- 18 pruebas automatizadas pasan: selección múltiple, filtros de carta y de recorrido, navegación directa, transición secuencial tras scroll rápido, inversión del scroll, cambio de categoría durante una animación, salida del recorrido y callbacks antiguos, tamaños y resumen de Instagram, copia y alternativa manual.
+- Las pruebas de cookies comprueban trozos y rellenos independientes para cada tipo, actualización del resumen, exclusión de opciones al desmarcar y omisión del tamaño de tarta en un pedido solo de cookies.
+- Catálogo comprobado: 29 identificadores únicos; 24 tartas de queso, tres chocolates, dos cookies y dos brownies. Los componentes de cookies no se añaden como productos.
+- Compilación de producción Vite y páginas legales verificadas.
+- 19 imágenes de producto nuevas siguen el maestro fotográfico inicial, con recortes transparentes y margen para rotación. Son imágenes de presentación; las tartas reales están en Instagram.
+- No hay navegador conectado: los tests de DOM no sustituyen una inspección visual en un navegador real. La apertura efectiva de Instagram depende del dispositivo y la sesión de la persona.
 
-No hay herramienta de navegador conectada disponible en la sesión: la revisión visual en escritorio y móvil y la ejecución de las animaciones en un navegador real siguen pendientes. Las pruebas DOM y la compilación no equivalen a una captura o validación visual. Los recursos gráficos se han inspeccionado como imágenes.
+Comandos reproducibles:
+
+```sh
+npm ci
+npm test
+npm run build
+```

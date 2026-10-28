@@ -7,3 +7,7 @@ Si el navegador no permite copiar, el resumen permanece visible y seleccionable.
 No se usa API de mensajería, autenticación de Instagram desde la web ni envíos automáticos. La apertura del chat en la app y el envío final no se han probado con una sesión real de Instagram. Se comprueban en DOM la preparación, copia, enlace y fallback.
 
 Referencia del enlace: https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/messaging-api/ig-me/ (la documentación devolvió 429 en esta sesión; el enlace no añade parámetros de mensaje no documentados).
+
+## Carta ampliada (28/10/2026)
+
+Las cookies Crumble y clásica tienen opciones separadas de trozos (selección múltiple) y relleno. Solo se incluyen en el resumen las opciones del tipo de cookie seleccionado. Al quitar una cookie sus preferencias dejan de enviarse; se conservan en memoria para recuperarlas si se vuelve a marcar. El tamaño de tartas se oculta y omite cuando la selección solo contiene cookies o brownies. No se envía ningún mensaje automáticamente.
