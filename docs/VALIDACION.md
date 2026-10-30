@@ -15,4 +15,4 @@ npm test
 npm run build
 ```
 
-El pedido actualizado verifica hora en lugar de personas, las dos opciones de formato de tarta, tamaño y ración independientes por cookie, actualización inmediata del resumen y exclusión de las opciones de una cookie desmarcada. No se calculan unidades por ración.
+El pedido actualizado verifica hora en lugar de personas, las dos opciones de formato de tarta, selector de tamaño de cookie (Pequeño o Grande) y ración independientes por cookie, actualización inmediata del resumen y exclusión de las opciones de una cookie desmarcada. No se calculan unidades por ración.

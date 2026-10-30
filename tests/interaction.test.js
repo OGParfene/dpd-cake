@@ -99,6 +99,7 @@ test('each cookie has its own chunks and filling and deselection removes its cus
  assert.ok(d.querySelector('#cookie-options').hidden);
  d.querySelector('[data-add="cookie-crumble"]').click();d.querySelector('[data-add="cookie-normal"]').click();
  assert.equal(d.querySelector('#cookie-options').hidden,false);assert.ok(d.querySelector('[name="size"]').disabled);
+ for(const id of ['cookie-crumble','cookie-normal'])assert.deepEqual([...d.querySelector(`select[name="${id}-size"]`).options].map(o=>o.value),['','Pequeño','Grande']);
  const choose=(name,value)=>{const control=[...d.querySelectorAll(`[name="${name}"]`)].find(input=>input.value===value);control.checked=true;control.dispatchEvent(new app.w.Event('input',{bubbles:true}));};
  choose('cookie-crumble-chunks','Pistacho');choose('cookie-crumble-chunks','Fresas deshidratadas');choose('cookie-normal-chunks','Chocolate sin lactosa');
  d.querySelector('[name="cookie-crumble-filling"]').value='Chocolate blanco';d.querySelector('[name="cookie-normal-filling"]').value='Chocolate negro';
@@ -106,10 +107,10 @@ test('each cookie has its own chunks and filling and deselection removes its cus
  let summary=d.querySelector('#instagram-summary').value;
  assert.ok(summary.includes('Cookie Crumble — trozos: Pistacho, Fresas deshidratadas; relleno: Chocolate blanco; tamaño: a consultar; cantidad: a consultar.'));
  assert.ok(summary.includes('Cookie clásica — trozos: Chocolate sin lactosa; relleno: Chocolate negro; tamaño: a consultar; cantidad: a consultar.'));assert.ok(!summary.includes('Formato de tarta:'));
- for(const [name,value] of [['cookie-crumble-size','80 g'],['cookie-crumble-portion','1 ración'],['cookie-normal-size','40 g'],['cookie-normal-portion','½ ración']]){const input=d.querySelector(`[name="${name}"]`);input.value=value;input.dispatchEvent(new app.w.Event('input',{bubbles:true}));}
- summary=d.querySelector('#instagram-summary').value;assert.ok(summary.includes('Cookie Crumble — trozos: Pistacho, Fresas deshidratadas; relleno: Chocolate blanco; tamaño: 80 g; cantidad: 1 ración.'));assert.ok(summary.includes('Cookie clásica — trozos: Chocolate sin lactosa; relleno: Chocolate negro; tamaño: 40 g; cantidad: ½ ración.'));
+ for(const [name,value] of [['cookie-crumble-size','Grande'],['cookie-crumble-portion','1 ración'],['cookie-normal-size','Pequeño'],['cookie-normal-portion','½ ración']]){const input=d.querySelector(`[name="${name}"]`);input.value=value;input.dispatchEvent(new app.w.Event('input',{bubbles:true}));}
+ summary=d.querySelector('#instagram-summary').value;assert.ok(summary.includes('Cookie Crumble — trozos: Pistacho, Fresas deshidratadas; relleno: Chocolate blanco; tamaño: Grande; cantidad: 1 ración.'));assert.ok(summary.includes('Cookie clásica — trozos: Chocolate sin lactosa; relleno: Chocolate negro; tamaño: Pequeño; cantidad: ½ ración.'));
  d.querySelector('[data-add="cookie-normal"]').click();summary=d.querySelector('#instagram-summary').value;
- assert.ok(!summary.includes('Cookie clásica'));assert.ok(!summary.includes('Chocolate sin lactosa'));assert.ok(!summary.includes('40 g'));assert.ok(!summary.includes('½ ración'));assert.ok(d.querySelector('[data-cookie-options="cookie-normal"]').disabled);
+ assert.ok(!summary.includes('Cookie clásica'));assert.ok(!summary.includes('Chocolate sin lactosa'));assert.ok(!summary.includes('Pequeño'));assert.ok(!summary.includes('½ ración'));assert.ok(d.querySelector('[data-cookie-options="cookie-normal"]').disabled);
  d.querySelector('[data-add="pistacho"]').click();assert.equal(d.querySelector('[name="size"]').disabled,false);
  d.querySelector('[data-add="cookie-crumble"]').click();assert.ok(d.querySelector('#cookie-options').hidden);
  app.dom.window.close();

@@ -32,9 +32,9 @@ test('cookie preferences stay associated with each selected cookie',()=>{
 });
 
 test('requested collection time and per-cookie size and portion are preserved without a headcount',()=>{
- const message=buildOrderMessage({time:'09:05',guests:12,cookies:[{name:'Cookie Crumble',size:'80 g',portion:'1 ración'},{name:'Cookie clásica',size:'40 g',portion:'½ ración'}]});
+ const message=buildOrderMessage({time:'09:05',guests:12,cookies:[{name:'Cookie Crumble',size:'Grande',portion:'1 ración'},{name:'Cookie clásica',size:'Pequeño',portion:'½ ración'}]});
  assert.ok(message.includes('Hora de entrega/recogida solicitada: 09:05.'));assert.ok(!message.includes('Personas:'));
- assert.ok(message.includes('Cookie Crumble — trozos: a consultar; relleno: a consultar; tamaño: 80 g; cantidad: 1 ración.'));
- assert.ok(message.includes('Cookie clásica — trozos: a consultar; relleno: a consultar; tamaño: 40 g; cantidad: ½ ración.'));
+ assert.ok(message.includes('Cookie Crumble — trozos: a consultar; relleno: a consultar; tamaño: Grande; cantidad: 1 ración.'));
+ assert.ok(message.includes('Cookie clásica — trozos: a consultar; relleno: a consultar; tamaño: Pequeño; cantidad: ½ ración.'));
  assert.ok(!buildOrderMessage().includes('Hora de entrega/recogida solicitada:'));
 });

@@ -27,7 +27,7 @@ No hay backend, persistencia de datos del visitante, analítica ni cookies publi
 
 - Archivos originales descargables de las publicaciones adjuntas al chat.
 - Archivo vectorial original del logo: se conserva la miniatura recuperada y se añade una reinterpretación nítida autorizada por el usuario.
-- Opciones oficiales de tamaño de cookie, unidades por ración, precios y condiciones de entrega. Los formatos de tarta confirmados son Grande y 12 tartaletas individuales.
+- Unidades de cookies por ración, precios y condiciones de entrega. Los tamaños de cookie confirmados son Pequeño y Grande; los formatos de tarta son Grande y 12 tartaletas individuales.
 - Confirmación del cliente Black Bull concreto y del colaborador «Desde Cero».
 - Nombres de los festivales patrocinados.
 
