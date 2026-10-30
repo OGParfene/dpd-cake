@@ -12,8 +12,9 @@ function setup({motion=false}={}){
  const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');w.eval(source);return {dom,w,document:w.document,getOpened:()=>opened,finishAnimation:()=>{assert.ok(animations.length,'Expected a pending animation');animations.shift()();},animationCount:()=>animations.length};
 }
 test('visitor can choose several flavors, copy the order and open Instagram',async()=>{
- const app=setup(),d=app.document;d.querySelector('#feature-add').click();d.querySelector('[data-add="brownie"]').click();assert.equal(d.querySelector('#selection-count').textContent,'2');d.querySelector('.header-order').click();assert.ok(d.querySelector('#order-dialog').open);assert.equal(d.querySelectorAll('input[name="flavors"]:checked').length,2);
- d.querySelector('select[name="size"]').value='Mediana';d.querySelector('input[name="guests"]').value='8';d.querySelector('input[name="date"]').value='2100-12-24';d.querySelector('textarea').value='Alergia: nueces & avellanas';d.querySelector('#order-form').dispatchEvent(new app.w.Event('submit',{bubbles:true,cancelable:true}));assert.equal(app.getOpened(),undefined);const message=d.querySelector('#instagram-summary').value;for(const part of ['Tradicional, Queso brownie','Tamaño solicitado: Mediana','Personas: 8','24/12/2100','nueces & avellanas'])assert.ok(message.includes(part));
+ const app=setup(),d=app.document;assert.equal(d.querySelector('[name="guests"]'),null);assert.deepEqual([...d.querySelector('[name="size"]').options].map(o=>o.value),['','Grande','12 tartaletas individuales']);d.querySelector('#feature-add').click();d.querySelector('[data-add="brownie"]').click();assert.equal(d.querySelector('#selection-count').textContent,'2');d.querySelector('.header-order').click();assert.ok(d.querySelector('#order-dialog').open);assert.equal(d.querySelectorAll('input[name="flavors"]:checked').length,2);
+ d.querySelector('select[name="size"]').value='12 tartaletas individuales';d.querySelector('input[name="time"]').value='18:30';d.querySelector('input[name="date"]').value='2100-12-24';d.querySelector('textarea').value='Alergia: nueces & avellanas';d.querySelector('#order-form').dispatchEvent(new app.w.Event('submit',{bubbles:true,cancelable:true}));assert.equal(app.getOpened(),undefined);const message=d.querySelector('#instagram-summary').value;for(const part of ['Tradicional, Queso brownie','Formato de tarta: 12 tartaletas individuales','Hora de entrega/recogida solicitada: 18:30','24/12/2100','nueces & avellanas'])assert.ok(message.includes(part));
+ assert.ok(!message.includes('Personas:'));
  let copied;Object.defineProperty(app.w.navigator,'clipboard',{value:{writeText:async text=>{copied=text;}},configurable:true});
  d.querySelector('#copy-instagram').click();await Promise.resolve();
  assert.equal(app.getOpened(),'https://ig.me/m/dpdcake');assert.equal(copied,message);assert.ok(d.querySelector('#copy-status').textContent.includes('Pedido copiado'));
@@ -103,10 +104,12 @@ test('each cookie has its own chunks and filling and deselection removes its cus
  d.querySelector('[name="cookie-crumble-filling"]').value='Chocolate blanco';d.querySelector('[name="cookie-normal-filling"]').value='Chocolate negro';
  d.querySelector('#order-form').dispatchEvent(new app.w.Event('submit',{bubbles:true,cancelable:true}));
  let summary=d.querySelector('#instagram-summary').value;
- assert.ok(summary.includes('Cookie Crumble — trozos: Pistacho, Fresas deshidratadas; relleno: Chocolate blanco.'));
- assert.ok(summary.includes('Cookie clásica — trozos: Chocolate sin lactosa; relleno: Chocolate negro.'));assert.ok(!summary.includes('Tamaño solicitado:'));
+ assert.ok(summary.includes('Cookie Crumble — trozos: Pistacho, Fresas deshidratadas; relleno: Chocolate blanco; tamaño: a consultar; cantidad: a consultar.'));
+ assert.ok(summary.includes('Cookie clásica — trozos: Chocolate sin lactosa; relleno: Chocolate negro; tamaño: a consultar; cantidad: a consultar.'));assert.ok(!summary.includes('Formato de tarta:'));
+ for(const [name,value] of [['cookie-crumble-size','80 g'],['cookie-crumble-portion','1 ración'],['cookie-normal-size','40 g'],['cookie-normal-portion','½ ración']]){const input=d.querySelector(`[name="${name}"]`);input.value=value;input.dispatchEvent(new app.w.Event('input',{bubbles:true}));}
+ summary=d.querySelector('#instagram-summary').value;assert.ok(summary.includes('Cookie Crumble — trozos: Pistacho, Fresas deshidratadas; relleno: Chocolate blanco; tamaño: 80 g; cantidad: 1 ración.'));assert.ok(summary.includes('Cookie clásica — trozos: Chocolate sin lactosa; relleno: Chocolate negro; tamaño: 40 g; cantidad: ½ ración.'));
  d.querySelector('[data-add="cookie-normal"]').click();summary=d.querySelector('#instagram-summary').value;
- assert.ok(!summary.includes('Cookie clásica'));assert.ok(!summary.includes('Chocolate sin lactosa'));assert.ok(d.querySelector('[data-cookie-options="cookie-normal"]').disabled);
+ assert.ok(!summary.includes('Cookie clásica'));assert.ok(!summary.includes('Chocolate sin lactosa'));assert.ok(!summary.includes('40 g'));assert.ok(!summary.includes('½ ración'));assert.ok(d.querySelector('[data-cookie-options="cookie-normal"]').disabled);
  d.querySelector('[data-add="pistacho"]').click();assert.equal(d.querySelector('[name="size"]').disabled,false);
  d.querySelector('[data-add="cookie-crumble"]').click();assert.ok(d.querySelector('#cookie-options').hidden);
  app.dom.window.close();

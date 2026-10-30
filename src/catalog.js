@@ -273,17 +273,17 @@ export const flavors = [
 ];
 export const instagramDMUrl='https://ig.me/m/dpdcake';
 export const instagramProfileUrl='https://www.instagram.com/dpdcake/';
-export function buildOrderMessage({flavors:chosen=[],flavor,size,guests,date,notes,cookies=[]}={}){
+export function buildOrderMessage({flavors:chosen=[],flavor,size,time,date,notes,cookies=[]}={}){
  const names=chosen.length?chosen:flavor?[flavor]:[];
  const lines=['¡Hola, DPD Cake! Me gustaría consultar un encargo.',names.length?`Sabores: ${names.join(', ')}.`:'Me gustaría que me recomendarais un sabor.'];
  for(const cookie of cookies){
-  lines.push(`${cookie.name} — trozos: ${cookie.chunks?.length?cookie.chunks.join(', '):'a consultar'}; relleno: ${cookie.filling||'a consultar'}.`);
+  lines.push(`${cookie.name} — trozos: ${cookie.chunks?.length?cookie.chunks.join(', '):'a consultar'}; relleno: ${cookie.filling||'a consultar'}; tamaño: ${cookie.size?.trim()||'a consultar'}; cantidad: ${cookie.portion||'a consultar'}.`);
  }
- if(size)lines.push(`Tamaño solicitado: ${size}.`);
- if(guests)lines.push(`Personas: ${guests}.`);
+ if(size)lines.push(`Formato de tarta: ${size}.`);
+ if(time)lines.push(`Hora de entrega/recogida solicitada: ${time}.`);
  if(date){const [y,m,d]=date.split('-');lines.push(`Fecha deseada: ${d}/${m}/${y}.`);}
  if(notes?.trim())lines.push(`Detalles: ${notes.trim()}`);
- lines.push('¿Qué tamaños tenéis disponibles? ¿Podéis confirmarme precio, disponibilidad, ingredientes y recogida o entrega?');
+ lines.push('¿Podéis confirmarme formato, precio, disponibilidad, ingredientes y horario de recogida o entrega?');
  return lines.join('\n');
 }
 export function getScrollState(scrollY,top,height,viewport,count){

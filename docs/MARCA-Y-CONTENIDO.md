@@ -1,6 +1,6 @@
 # DPD Cake — marca, catálogo y referencias
 
-Actualizado el 28/10/2026. Información facilitada por el usuario y piezas gráficas adjuntas en esta conversación. La lista ampliada enviada por el usuario el 28/10/2026 prevalece sobre las piezas iniciales.
+Actualizado el 30/10/2026. Información facilitada por el usuario y piezas gráficas adjuntas en esta conversación. La lista ampliada enviada por el usuario el 28/10/2026 prevalece sobre las piezas iniciales.
 
 ## Identidad
 
@@ -27,7 +27,7 @@ Desde Cero (Chocoflakes) es un sabor confirmado expresamente en la nueva lista. 
 
 Los textos nuevos son descripciones breves de presentación a partir del nombre facilitado; no describen recetas ni listas completas de ingredientes. Las imágenes nuevas son composiciones ilustrativas, no fotografías de producto real. En particular, la receta exacta de Tartufa debe confirmarse con el negocio.
 
-Tamaños de tartas facilitados por el usuario: Pequeña, Mediana y Grande. No se publican medidas, pesos, raciones, precios ni ingredientes exhaustivos porque no se han confirmado. Para pedidos que solo contienen cookies o brownies no se incluye el tamaño de tarta. El negocio confirma formato y todos los detalles por Instagram.
+Formatos de tartas actualizados por el usuario: Grande o 12 tartaletas individuales. No se publican medidas, pesos, raciones, precios ni ingredientes exhaustivos porque no se han confirmado. Para pedidos que solo contienen cookies o brownies no se incluye el tamaño de tarta. El negocio confirma formato y todos los detalles por Instagram.
 
 ## Clientes y colaboraciones
 
@@ -43,3 +43,5 @@ El usuario ha indicado como clientes: Rocket (San Fernando de Henares), Ruta 13 
 Las piezas adjuntas son visibles como referencia en la conversación, pero no se han proporcionado como archivos descargables accesibles al proyecto. No se afirma que estén guardadas en este repositorio. Cuando se reciba el ZIP original, conservarlo en `docs/referencias/` e incorporar fotografías recortadas en `public/assets/sabores/`.
 
 Los assets disponibles incluyen los logos recuperados y los nuevos materiales de presentación creados con autorización del usuario. La versión actual reemplaza el modelo 3D por composiciones fotográficas de porciones con transparencia. El detalle de procedencia y los recursos maestros están en `RECURSOS-Y-DISENO.md`. La web indica que son imágenes de presentación y enlaza a las fotografías reales de Instagram.
+
+Actualización del pedido (30/10/2026): se elimina el número de personas y se solicita la hora de entrega/recogida deseada, sujeta a confirmación. Cada tipo de cookie permite indicar su tamaño y elegir 1 ración o ½ ración. No se afirma un número de galletas por ración porque depende del tamaño. Las opciones oficiales de tamaño de cookie están pendientes; por ahora el visitante puede escribir su preferencia o consultarla.

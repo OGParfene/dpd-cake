@@ -51,7 +51,7 @@ La web actual utiliza imágenes de presentación; no utiliza modelos 3D. Los mat
 
 ## Pedidos
 
-Instagram: [@dpdcake](https://www.instagram.com/dpdcake/). Teléfono: +34 601 082 383. Se prepara un resumen con los productos, tamaño de las tartas, personas, fecha, notas y personalización de cada tipo de cookie. El visitante lo copia, abre Instagram y lo pega y envía manualmente en el chat de @dpdcake. DPD Cake confirma formato, precio, disponibilidad, ingredientes y recogida o entrega antes de cerrar el pedido.
+Instagram: [@dpdcake](https://www.instagram.com/dpdcake/). Teléfono: +34 601 082 383. Se prepara un resumen con los productos, tamaño de las tartas, hora de entrega/recogida, fecha, notas y personalización de cada tipo de cookie. El visitante lo copia, abre Instagram y lo pega y envía manualmente en el chat de @dpdcake. DPD Cake confirma formato, precio, disponibilidad, ingredientes y recogida o entrega antes de cerrar el pedido.
 
 ## Privacidad y accesibilidad
 
